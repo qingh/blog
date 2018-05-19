@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>Untitled</title><meta charset='utf-8'><link href='https://dn-maxiang.qbox.me/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: 'Helvetica Neue', Arial, 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei', 'WenQuanYi Micro Hei', SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+<p>一、mysql启动关闭方式</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs livecodeserver"><div class="hljs-line">net <span class="hljs-built_in">start</span> mysql <span class="hljs-comment"> //启用mysql服务</span>
+</div><div class="hljs-line">net <span class="hljs-built_in">stop</span> mysql <span class="hljs-comment"> //停止mysql服务</span>
+</div><div class="hljs-line">mysql -uroot -p<span class="hljs-comment"> //输入密码进入命令行界面</span>
+</div></code></pre>
+
+<p>二、修改mysql root 用户密码</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs gams"><div class="hljs-line">mysql&gt;use mysql;
+</div><div class="hljs-line">mysql&gt;update user <span class="hljs-keyword">set</span> password=password(<span class="hljs-string">'123456'</span>) where <span class="hljs-comment">user=</span><span class="hljs-comment">'root'</span>;
+</div><div class="hljs-line">mysql&gt;update user <span class="hljs-keyword">set</span> authentication_string=password(<span class="hljs-string">'123456'</span>) where <span class="hljs-comment">user=</span><span class="hljs-comment">'root'</span>;
+</div><div class="hljs-line">mysql&gt;flush privileges;
+</div></code></pre>
+
+<p>三、修改mysql编码</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs 1c"><div class="hljs-line">mysql&gt;\s  <span class="hljs-comment">//查看mysql编码</span>
+</div></code></pre>
+
+<p>编辑mysql.ini文件</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs ini"><div class="hljs-line"><span class="hljs-section">[mysql]</span>
+</div><div class="hljs-line"><span class="hljs-attr">default-character-set</span>=utf8
+</div><div class="hljs-line"><span class="hljs-section">
+</span></div><div class="hljs-line">[mysqld]
+</div><div class="hljs-line"><span class="hljs-attr">character-set-server</span>=utf8
+</div></code></pre>
+
+<p>四、退出mysql命令行的三种方式</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs awk"><div class="hljs-line"><span class="hljs-number">1</span>.mysql&gt;<span class="hljs-keyword">exit</span>
+</div><div class="hljs-line"><span class="hljs-number">2</span>.mysql&gt;quit
+</div><div class="hljs-line"><span class="hljs-number">3</span>.mysql&gt;\q
+</div></code></pre>
+
+<p>五、个性化设置MySQL prompt 提示符</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs livecodeserver"><div class="hljs-line">mysql -uroot -p <span class="hljs-comment">--prompt=qingh</span>
+</div><div class="hljs-line">mysql&gt; <span class="hljs-comment">---&gt;  qingh</span>
+</div><div class="hljs-line">prompt mysql&gt; <span class="hljs-comment"> //变回默认</span>
+</div><div class="hljs-line">
+</div><div class="hljs-line">prompt \u  <span class="hljs-comment"> //root</span>
+</div><div class="hljs-line">prompt \h  <span class="hljs-comment"> //localhost</span>
+</div><div class="hljs-line">prompt \D  <span class="hljs-comment"> //当前时间</span>
+</div><div class="hljs-line">prompt \d  <span class="hljs-comment"> //当前打开的数据库</span>
+</div></code></pre>
+
+<p>六、mysql常用语句</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs cs"><div class="hljs-line">mysql&gt;<span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">version</span>(<span class="hljs-params"></span>)</span>; <span class="hljs-comment">//当前数据库版本</span>
+</div><div class="hljs-line">mysql&gt;<span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">now</span>(<span class="hljs-params"></span>)</span>;     <span class="hljs-comment">//显示当前时间</span>
+</div><div class="hljs-line">mysql&gt;<span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">user</span>(<span class="hljs-params"></span>)</span>;    <span class="hljs-comment">//显示当前用户</span>
+</div><div class="hljs-line">mysql&gt;show engines;  <span class="hljs-comment">//查看mysql的存储引擎</span>
+</div><div class="hljs-line">
+</div><div class="hljs-line">mysql&gt;show warnings;  <span class="hljs-comment">//显示上一步操作产生的警告</span>
+</div><div class="hljs-line">
+</div><div class="hljs-line">\c 取消当前语句执行
+</div><div class="hljs-line">eg:mysql&gt;<span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">version</span>(<span class="hljs-params"></span>)\c
+</span></div><div class="hljs-line">注意：上面这条语句不能加分号
+</div></code></pre>
+
+<p>七、mysql 日志</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs taggerscript"><div class="hljs-line">mysql&gt; <span class="hljs-symbol">\T</span> C:<span class="hljs-symbol">\U</span>sers<span class="hljs-symbol">\A</span>dministrator<span class="hljs-symbol">\D</span>esktop<span class="hljs-symbol">\n</span>otes<span class="hljs-symbol">\m</span>ysql<span class="hljs-symbol">\l</span>og.txt    //注意：以上语句，结尾不需要分号
+</div><div class="hljs-line">
+</div><div class="hljs-line">mysql&gt;<span class="hljs-symbol">\t</span>  //结束记录日志。注意：以上语句，结尾不需要分号
+</div></code></pre></div></body></html>

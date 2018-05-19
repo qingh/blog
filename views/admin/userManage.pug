@@ -1,0 +1,31 @@
+extends include/layout.pug
+block head-area-extra-css
+	link(type="text/css" rel='stylesheet' href='/css/admin/tab.css')
+	link(type="text/css" rel="stylesheet" href='/css/admin/userManage.css')
+
+block body-area-contents
+	.box
+		.publis
+			a(href="/admin/addUser") 添加用户
+		table#tab.tab
+			thead
+				tr
+					th(width='20%') id
+					th(width='60%') 用户名
+					th(width='20%') 操作
+			tbody
+				if data.length
+					each val,index in data
+						tr
+							td= val.userId
+							td= val.username
+							td
+								a.edit(href='javascript:;' data-id=val.userId) 编辑
+								a.delete(href='javascript:;' data-id=val.userId) 删除
+				else
+					tr
+						td(colspan="3") 暂无数据
+
+block body-area-script
+	script(src='/js/layer/layer.js')
+	script(src='/js/admin/userManage.js')

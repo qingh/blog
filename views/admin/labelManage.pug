@@ -1,0 +1,31 @@
+extends include/layout.pug
+block head-area-extra-css
+	link(rel='stylesheet', href='/css/admin/tab.css')
+	link(rel='stylesheet', href='/css/admin/labelManage.css')
+
+block body-area-contents
+	.box
+		.publis
+			a#addType(href="javascript:;") 新建分类
+		table#tab.tab
+			thead
+				tr
+					th(width='20%') id
+					th(width='60%') 名称
+					th(width='20%') 操作
+			tbody
+				if data.length
+					each val,index in data
+						tr
+							td= val.labelId
+							td= val.name
+							td
+								a.edit(href='javascript:;' data-id=val.labelId) 编辑
+								a.delete(href='javascript:;' data-id=val.labelId) 删除
+				else
+					tr
+						td(colspan="3") 暂无数据
+
+block body-area-script
+	script(src='/js/layer/layer.js')
+	script(src='/js/admin/labelManage.js')

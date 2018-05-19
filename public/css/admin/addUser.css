@@ -1,0 +1,47 @@
+.addUser {
+	margin: 120px 0 0 100px;
+	font-size: 14px;
+}
+
+.addUser dl {
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.addUser dl dt {
+	float: left;
+	width: 45px;
+	height: 32px;
+	line-height: 32px;
+	text-align: right;
+	margin-right: 12px;
+}
+
+.addUser dl dd {
+	float: left;
+}
+
+.addUser dl input[type="text"],
+.addUser dl input[type="password"] {
+	float: left;
+	width: 220px;
+	height: 30px;
+	padding: 0 5px;
+	margin-right: 8px;
+	border: 1px solid #ddd;
+}
+
+.addUser dl .code {
+	width: 112px!important;
+}
+
+.addUser .add-btn {
+	float: left;
+	width: 124px;
+	height: 40px;
+}
+
+#loading {
+	display: none;
+	margin: 4px 0 0 10px;
+}

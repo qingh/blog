@@ -1,0 +1,42 @@
+extends include/layout.pug
+block head-area-extra-css
+	link(rel='stylesheet', href='/css/admin/tab.css')
+	link(rel='stylesheet', href='/css/admin/articleManage.css')
+
+block body-area-contents
+	.box
+		.publis
+			a(href="/admin/publishArticle") 发布文章
+		table#tab.tab('data-number'= number)
+			thead
+				tr
+					th(width='5%') id
+					th(width='30%') 标题
+					th(width='15%') 分类
+					th(width='15%') 路径
+					th(width='15%') 日期
+					th(width='10%') 作者
+					th(width='10%') 操作
+			tbody
+				if data.length
+					each val,index in data
+						tr
+							td= val.articleId
+							td= val.title
+							td= val.tag
+							td= val.src
+							td= val.date
+							td= val.author
+							td
+								a(href='/admin/editArticle?id=' + val.articleId data-id=val.articleId) 编辑
+								a.delete(href='javascript:;' data-id=val.articleId) 删除
+				else
+					tr
+						td(colspan="7") 暂无数据
+						
+		#page
+
+block body-area-script
+	script(src='/js/laypage/laypage.js')
+	script(src='/js/layer/layer.js')
+	script(src='/js/admin/articleManage.js')

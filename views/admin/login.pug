@@ -1,0 +1,30 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		title= title
+		link(href='../css/login.css', rel='stylesheet')
+	body
+		.login
+			dl
+				dt 用户名
+				dd
+					input(type="text" name="username" id="username" maxlength="6")
+			dl
+				dt 密码
+				dd
+					input(type="password" name="pwd" id="password" maxlength="16")
+			dl
+				dt 验证码
+				dd
+					input.code(type="text" name="code" id="code" maxlength="4") 
+					img#codeImg(src="/captchapng")
+			dl
+				dt &nbsp;
+				dd
+					input#login.login-btn(type="button" value="登录")
+					img#loading(src="../images/loading.gif")
+		script(src='../js/jquery-3.1.1.js')
+		script(src='../js/layer/layer.js')
+		script(src='../js/md5.min.js')
+		script(src="../js/login.js")

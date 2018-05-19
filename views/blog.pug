@@ -1,0 +1,40 @@
+doctype html
+html
+	head
+		title= title
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width,initial-scale=1.0")
+		meta(name="keywords" content="刘庆华，个人博客，个人网站，网站开发")
+		meta(name="description" content="刘庆华的个人博客，专注于全栈开发" )
+		link(rel="stylesheet" type="text/css" href="./css/normalize.css")
+		link(rel="stylesheet" type="text/css" href="./css/blog.css")
+		link(rel="stylesheet" type="text/css" href="./css/date.css")
+	body
+		#blog
+			.bread-crumb 
+				a(href="/") 博客首页
+				b >
+				span 日志列表
+			.main
+				.left
+					h3 最新文章
+					if articleList.length
+						ul.list
+							each val,index in articleList
+								li
+									a(href="/article?id="+val.articleId)= val.title
+									span(title= val.num + '条评论')= val.date + ' （' + val.num + '）'
+					else
+						p.no-article 暂无文章
+				.right
+					#date.item.date(data-nowdate=nowDate) !{dateStr}
+					.item.label
+						h3 分类
+						ul
+							each val,index in labelList
+								li
+									a(href="JavaScript:;")= val.name +' （'+ val.num + '）'
+
+		script(src="./js/jquery-3.1.1.js")
+		script(src="./js/date.js")
+

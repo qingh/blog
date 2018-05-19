@@ -1,0 +1,274 @@
+@import url('./iconfont.css');
+.article {
+	width: 1000px;
+	overflow: hidden;
+	margin: 0 auto 100px;
+}
+
+.bread-crumb {
+	margin: 0;
+	padding: 25px 0;
+	font-size: 16px;
+}
+
+.bread-crumb a {
+	text-decoration: none;
+}
+
+.bread-crumb b {
+	margin: 0 10px;
+	color: #666;
+}
+
+.bread-crumb span {
+	color: #666;
+}
+
+.top {
+	overflow: hidden;
+	padding: 15px;
+	border-radius: 8px;
+	background-color: #aad2f0;
+}
+
+.top .type {
+	margin: 0;
+	font-size: 14px;
+}
+
+.top .type a {
+	color: green;
+	text-decoration: none;
+}
+
+.top ul {
+	padding: 0;
+	overflow: hidden;
+	font-size: 14px;
+	margin-top: 20px;
+	list-style: none;
+}
+
+.top ul li {
+	width: 50%;
+	line-height: 24px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.top ul li:nth-child(1) {
+	float: left;
+}
+
+.top ul li:nth-child(2) {
+	text-align: right;
+	float: right;
+}
+
+.main .title {
+	margin: 20px 0 0;
+	font-size: 24px;
+	font-weight: normal;
+	line-height: 80px;
+	border-bottom: 1px solid #d3d3d3;
+}
+
+.main .author,
+.main .date {
+	color: #556677
+}
+
+.msg {
+	overflow: hidden;
+	margin-top: 30px;
+}
+
+.msg h2 {
+	margin: 0;
+	font-size: 20px;
+	line-height: 55px;
+	font-weight: normal;
+	border-bottom: 1px solid #ccc;
+}
+
+.msg ul {
+	list-style: none;
+	padding: 0;
+}
+
+.msg ul li {
+	overflow: hidden;
+	position: relative;
+	padding: 20px 0 0px;
+	border-bottom: 1px dashed #ccc;
+}
+
+.msg .msg-wrap {
+	overflow: hidden;
+}
+
+.msg .floor {
+	position: absolute;
+	right: 0;
+	top: 20px;
+	color: grey;
+}
+
+.msg .photo {
+	width: 72px;
+	float: left;
+}
+
+.msg .photo img {
+	display: block;
+	border-radius: 8px;
+}
+
+.msg .photo span {
+	display: block;
+	text-align: center;
+	font-size: 12px;
+	color: #666;
+	margin-top: 8px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.msg .msg-right {
+	margin-left: 100px;
+}
+
+.msg .msg-cnt {
+	margin-right: 55px;
+}
+
+.msg .msg-cnt p {
+	margin: 0;
+	font-size: 14px;
+	color: #333;
+	line-height: 24px;
+}
+
+.msg-info {
+	overflow: hidden;
+}
+
+.msg-info p {
+	float: right;
+	margin: 4px 0 0;
+	font-size: 14px;
+	color: grey;
+}
+
+.msg-info a {
+	float: right;
+	margin-left: 20px;
+	font-size: 14px;
+	text-decoration: none;
+}
+
+.msg-info .zan {
+	color: orange;
+}
+
+.msg-info .cai {
+	color: gray;
+}
+
+.msg-info a span {
+	float: left;
+	margin-left: 5px;
+	height: 23px;
+	line-height: 23px;
+}
+
+.msg-info .icon-cai {
+	margin-top: 3px;
+}
+
+.leave-word {
+	overflow: hidden;
+	margin-top: 30px;
+}
+
+.leave-word h2 {
+	margin: 0;
+	font-size: 20px;
+	line-height: 55px;
+	font-weight: normal;
+	border-bottom: 1px solid #ccc;
+}
+
+.leave-word textarea {
+	width: 70%;
+	height: 120px;
+	padding: 5px;
+	font-size: 14px;
+	line-height: 24px;
+	border: 1px solid #ccc;
+}
+
+.leave-word dl {
+	margin: 20px 0 0;
+}
+
+.leave-word dl dt {
+	font-size: 14px;
+	color: #333;
+}
+
+.leave-word dl dd {
+	position: relative;
+	overflow: hidden;
+	margin: 10px 0 0;
+}
+
+.leave-word dl input {
+	width: 320px;
+	height: 38px;
+	padding: 0 4px;
+	border: 1px solid #d3d3d3;
+	background-color: #f5f4df;
+}
+
+.leave-word dl input[type="file"] {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	opacity: 0;
+}
+
+.leave-word .sel-file {
+	float: left;
+	width: 330px;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 4px;
+	font-size: 14px;
+	color: gray;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	box-sizing: border-box;
+	border: 1px solid #d3d3d3;
+	background-color: #f5f4df;
+}
+
+#loading {
+	margin: 4px 0 0 10px;
+	display: none;
+}
+
+.leave-word .publish {
+	width: 120px;
+	height: 32px;
+	margin-top: 30px;
+	color: white;
+	background: orange;
+	border: 0;
+	cursor: pointer;
+	outline: none;
+}

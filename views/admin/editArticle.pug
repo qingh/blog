@@ -1,0 +1,32 @@
+extends include/layout.pug
+block head-area-extra-css
+	link(rel='stylesheet', href='/css/admin/publishArticle.css')
+
+block body-area-contents
+	.box
+		dl
+			dt 标题
+			dd
+				input#title(type="text" value=data.title)
+		dl
+			dt 路径
+			dd
+				input#src(type="text" value=data.src)
+		dl
+			dt 分类
+			dd
+				select#label
+					each val,index in labelList
+						if data.labelId === val.labelId 
+							option(value= val.labelId selected="selected")= val.name
+						else
+							option(value= val.labelId)= val.name
+		
+		dl
+			dt &nbsp;
+			dd
+				input#publis(type="button" value="发布" data-aid=data.articleId)
+
+block body-area-script
+	script(src='/js/layer/layer.js')
+	script(src='/js/admin/editArticle.js')
