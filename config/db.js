@@ -6,8 +6,7 @@ module.exports = {
 		user: 'root',
 		port: 3306,
 		password: '12345678',
-		database: '2018-03-14'
-		// database: 'blog'
+		database: 'blog'
 	},
 	production: {
 		host: '104.171.168.137',

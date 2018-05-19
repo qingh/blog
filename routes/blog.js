@@ -5,26 +5,16 @@ const router = require('koa-router')(),
 router.prefix('/blog');
 
 router.get('/', async function (ctx) {
-	console.log(1);
 	try {
-		console.log(2);
 		let sql1 = `SELECT articles.article_id,articles.title,articles.date,(SELECT COUNT(*) FROM comments WHERE comments.a_id = articles.article_id) AS num FROM articles ORDER BY date DESC`,
 			sql2 = `SELECT A.label_id,A.name,(SELECT COUNT(*) FROM articles WHERE label_id=A.label_id) AS num FROM labels A`,
 			[articleList] = await db.query(sql1),
 			[labelList] = await db.query(sql2),
 
 			str = ``,
-			week = 0, //存储星期
 			now = new Date(),
-			setDate = new Date(),
-			month1 = [4, 6, 9, 11],
-			month2 = [1, 3, 5, 7, 8, 10, 12];
-		console.log(articleList);
-		console.log(labelList);
+			setDate = new Date();
 		setDate.setDate(1);
-		week = setDate.getDay();
-
-
 		for (let i of articleList) {
 			i.date = common.formatTime(i.date).split(' ')[0];
 		}
@@ -69,7 +59,6 @@ router.get('/', async function (ctx) {
 			nowDate: new Date().getTime()
 		});
 	} catch (e) {
-		console.log(e);
 		await ctx.render('500', {
 			title: '500',
 			msg: e

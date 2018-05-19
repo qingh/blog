@@ -31,7 +31,6 @@ router.get('/login', async function (ctx) {
 
 //登录
 router.post('/login', async function (ctx) {
-	console.log(typeof ctx.request.body);
 	let { username, pwd, code } = ctx.request.body,
 		userArr = await users.findAll({
 			where: {
