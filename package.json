@@ -17,7 +17,7 @@
 		"blueimp-md5": "^2.10.0",
 		"captchapng": "0.0.1",
 		"eslint": "^4.4.1",
-		"jquery": "^3.2.1",
+		"jquery": "^3.5.0",
 		"koa": "^2.3.0",
 		"koa-bodyparser": "^4.2.0",
 		"koa-favicon": "^2.0.0",
