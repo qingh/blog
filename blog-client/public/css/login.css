@@ -1,0 +1,53 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.login {
+	width: 300px;
+	margin: 120px auto 0;
+	font-size: 14px;
+}
+
+.login dl {
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.login dl dt {
+	float: left;
+	width: 45px;
+	height: 32px;
+	line-height: 32px;
+	text-align: right;
+	margin-right: 12px;
+}
+
+.login dl dd {
+	float: left;
+}
+
+.login dl input[type="text"],
+.login dl input[type="password"] {
+	float: left;
+	width: 220px;
+	height: 30px;
+	padding: 0 5px;
+	margin-right: 8px;
+	border: 1px solid #ddd;
+}
+
+.login dl .code {
+	width: 112px!important;
+}
+
+.login .login-btn {
+	float: left;
+	width: 124px;
+	height: 40px;
+}
+
+#loading {
+	display: none;
+	margin: 4px 0 0 10px;
+}

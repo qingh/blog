@@ -1,0 +1,26 @@
+
+.box dl {
+	overflow: hidden;
+}
+
+.box dl dt {
+	float: left;
+	width: 70px;
+	text-align: right;
+}
+
+.box dl dd {
+	float: left;
+}
+
+.box dl input{
+	width: 330px;
+	height: 35px;
+	padding: 0 3px;
+	box-sizing: border-box;
+}
+
+.box dl select{
+	width: 330px;
+	height: 35px;
+}

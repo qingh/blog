@@ -1,0 +1,26 @@
+doctype html
+html
+	head
+		title= title
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width,initial-scale=1.0")
+		meta(name="keywords" content="刘庆华，个人博客，个人网站，网站开发")
+		meta(name="description" content="刘庆华的个人博客，专注于全栈开发" )
+		link(rel='stylesheet', href='/css/admin/normalize.css')
+		link(rel='stylesheet', href='/css/admin/admin.css')
+		block head-area-extra-css
+
+	body
+		block body-area-header
+			include header
+
+		block body-area-container
+			include container
+
+		block body-area-footer
+			include footer
+
+		block body-area-basic-script
+			script(src='/js/jquery-3.1.1.js')
+
+		block body-area-script
