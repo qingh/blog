@@ -1,36 +1,25 @@
-import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import css from './index.module.less';
-import { userService } from '../../api';
-
-interface ILogin {
-  username: string
-  password: string
-  remember: string
-}
+import { useNavigate } from 'react-router-dom'
+import { Form, Input, Button, Checkbox, message } from 'antd'
+import css from './index.module.less'
+import { userService } from '@api/service'
 
 const layout = {
   labelCol: { span: 5 },
-  wrapperCol: { span: 19 },
-};
+  wrapperCol: { span: 19 }
+}
 const tailLayout = {
-  wrapperCol: { offset: 5, span: 19 },
-};
+  wrapperCol: { offset: 5, span: 19 }
+}
 
 export const Login = () => {
   const navigate = useNavigate()
   const onFinish = async (values: ILogin) => {
-    let [err, res] = await userService.login(values);
-    if (err) {
-      return message.error(err.message);
-    }
-    let { code, msg } = res.data;
-    if (code) {
-      navigate('/');
-    } else {
-      message.error(msg);
-    }
-  };
+    const [err, res] = await userService.login(values)
+    if (err) return message.error(err.message)
+    const { errorCode, message: msg } = res.data
+    if (errorCode) return navigate('/')
+    message.error(msg)
+  }
   return (
     <div id={css.login}>
       <Form
@@ -58,5 +47,5 @@ export const Login = () => {
         </Form.Item>
       </Form>
     </div>
-  );
-};
+  )
+}

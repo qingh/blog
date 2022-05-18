@@ -1,52 +1,52 @@
-import { useRef, useState, useEffect, Fragment } from 'react';
-import { Modal, Row, Col, Form, Input, Table, Button, Select, message } from 'antd';
-const { Option } = Select;
-import { commentService } from '../../api';
+import { useState, useEffect, Fragment } from 'react'
+import { Row, Col, Form, Input, Table, Button, Select, message } from 'antd'
+import { commentService } from '@api/service'
+const { Option } = Select
 
 export default props => {
-  const [dataSource, setDataSource] = useState([]);
-  const [visible, showModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [count, setCount] = useState(0); //此state只是为了表格里的按钮loading时能重新渲染
-  const [tableLoading, setTableLoading] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [id, setId] = useState(0);
-  const [current, setCurrent] = useState(1);
-  const [type, setType] = useState(0); //0:新建；1:编辑
+  const [dataSource, setDataSource] = useState([])
+  const [visible, showModal] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [count, setCount] = useState(0) // 此state只是为了表格里的按钮loading时能重新渲染
+  const [tableLoading, setTableLoading] = useState(false)
+  const [total, setTotal] = useState(0)
+  const [id, setId] = useState(0)
+  const [current, setCurrent] = useState(1)
+  const [type, setType] = useState(0) // 0:新建；1:编辑
   const [queryData, setQueryData] = useState({
     label_id: '',
     label_name: '',
-    author: '',
-  });
-  const pagesize = 5; //每页的条数
+    author: ''
+  })
+  const pagesize = 5 // 每页的条数
   const columns = [
     {
       title: 'id',
-      dataIndex: 'id',
+      dataIndex: 'id'
     },
     {
       title: '文章标题',
-      dataIndex: 'title',
+      dataIndex: 'title'
     },
     {
       title: '评论内容',
-      dataIndex: 'content',
+      dataIndex: 'content'
     },
     {
       title: '昵称',
-      dataIndex: 'nick_name',
+      dataIndex: 'nick_name'
     },
     {
       title: '赞',
-      dataIndex: 'zan',
+      dataIndex: 'zan'
     },
     {
       title: '踩',
-      dataIndex: 'cai',
+      dataIndex: 'cai'
     },
     {
       title: '评论日期',
-      dataIndex: 'create_at',
+      dataIndex: 'create_at'
     },
     {
       title: '操作',
@@ -58,74 +58,74 @@ export default props => {
             danger
             size="small"
             onClick={() => {
-              delComment(record);
+              delComment(record)
             }}
             loading={record.loading}
           >
             删除
           </Button>
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   useEffect(() => {
-    commentList();
-  }, []);
+    commentList()
+  }, [])
 
   const onReset = () => {
-    form.resetFields();
-    setCurrent(1);
+    form.resetFields()
+    setCurrent(1)
     setQueryData({
       comment_id: '',
       content: '',
-      title: '',
-    });
+      title: ''
+    })
     commentList({
       label_id: '',
       label_name: '',
-      author: '',
-    });
-  };
+      author: ''
+    })
+  }
 
-  //查询列表
+  // 查询列表
   const commentList = async values => {
-    setTableLoading(true);
+    setTableLoading(true)
     for (const key in values) {
       if (typeof values[key] === 'string') {
-        values[key] = values[key].trim();
+        values[key] = values[key].trim()
       }
     }
-    const [err, res] = await commentService.commentList({ current: 1, pagesize, ...queryData, ...values });
-    setTableLoading(false);
+    const [err, res] = await commentService.commentList({ current: 1, pagesize, ...queryData, ...values })
+    setTableLoading(false)
     if (err) {
-      return message.error(err.message);
+      return message.error(err.message)
     }
-    const { code, msg, data } = res.data;
+    const { code, msg, data } = res.data
     if (code) {
       data.records.forEach(item => {
-        item.loading = false;
-      });
-      setDataSource(data.records);
-      setTotal(data.total);
+        item.loading = false
+      })
+      setDataSource(data.records)
+      setTotal(data.total)
     } else {
-      message.error(msg);
+      message.error(msg)
     }
-  };
+  }
 
   const onFinish = values => {
-    console.log(values);
-  };
+    console.log(values)
+  }
 
   const onChange = (num, val) => {
-    console.log(`selected ${num},${val}`);
-  };
+    console.log(`selected ${num},${val}`)
+  }
 
   const onSearch = (num, val) => {
-    console.log('search:', val);
-  };
+    console.log('search:', val)
+  }
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
   return (
     <Fragment>
@@ -153,10 +153,10 @@ export default props => {
                 placeholder="请选择作者"
                 optionFilterProp="children"
                 onChange={value => {
-                  onChange(1, value);
+                  onChange(1, value)
                 }}
                 onSearch={() => {
-                  onSearch(1, value);
+                  onSearch(1, value)
                 }}
                 filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
@@ -182,5 +182,5 @@ export default props => {
       <br />
       <Table dataSource={dataSource} columns={columns} />
     </Fragment>
-  );
-};
+  )
+}

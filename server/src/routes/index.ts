@@ -1,10 +1,8 @@
-import Koa from 'koa';
-import { articles } from './articles.js';
-import { comments } from './comments.js';
-import { labels } from './labels.js';
-import { users } from './users.js';
-
-
+import Koa from 'koa'
+import { articles } from './articles.js'
+import { comments } from './comments.js'
+import { labels } from './labels.js'
+import { users } from './users.js'
 
 export const router = (app: Koa) => {
   app.use(articles.routes()).use(articles.allowedMethods())

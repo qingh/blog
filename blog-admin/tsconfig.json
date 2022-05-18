@@ -20,25 +20,20 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "sourceMap": true,
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "paths": {
-      "@pages/*": [
-        "pages/*"
-      ],
       "@api/*": [
-        "api"
+        "./api/*"
       ],
-      "@imgs/*": [
-        "static/imgs/*"
+      "@types/*": [
+        "./types/*"
+      ],
+      "@pages/*": [
+        "./pages/*"
       ]
-    }
+    },
   },
   "include": [
     "src"
-  ],
-  // "references": [
-  //   {
-  //     "path": "./tsconfig.node.json"
-  //   }
-  // ]
+  ]
 }

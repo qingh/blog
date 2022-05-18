@@ -1,16 +1,16 @@
-import { createElement, useState, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Layout } from 'antd';
+import { createElement, useState, Suspense } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { Layout } from 'antd'
 import Icon, {
   MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from '@ant-design/icons';
-import Loading from '../loading';
-import { router } from '../../../router';
-import { MenuComponent } from './sidebar';
-import css from './index.module.less';
+  MenuFoldOutlined
+} from '@ant-design/icons'
+import Loading from '../loading'
+import { router } from '../../../router'
+import { MenuComponent } from './sidebar'
+import css from './index.module.less'
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout
 
 const Logo = () => {
   return (
@@ -29,28 +29,29 @@ export const Home = () => {
         <div className={css.logo} style={{ background: collapsed ? 'transparent' : 'rgba(255, 255, 255, 0.3)' }}>{collapsed ? <Icon component={Logo}></Icon> : '博客后台管理系统'}</div>
         <MenuComponent />
       </Sider>
-      <Layout className="site-layout">
+      <Layout className="site-layout" style={{ overflow: 'auto' }}>
         <Header style={{ padding: 0, background: 'white' }}>
           {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
             className: css.trigger,
-            onClick: () => setSollapsed(!collapsed),
+            onClick: () => setSollapsed(!collapsed)
           })}
         </Header>
         <Content
           style={{
             padding: 24,
-            minHeight: 280,
+            minHeight: 280
           }}
         >
           <Suspense fallback={<Loading />}>
             <Routes>
               {
-                router.map(item => <Route key={item.key} index={item.key === '0' ? true : false} path={item.path} element={item.component ? <item.component /> : null} />)
+                router.map(item => <Route key={item.key} index={item.key === '0'} path={item.path} element={item.component ? <item.component /> : null} />)
               }
             </Routes>
           </Suspense>
         </Content>
+        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
       </Layout>
     </Layout>
-  );
+  )
 }
