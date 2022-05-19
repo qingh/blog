@@ -11,7 +11,8 @@ interface IComment {
 async function getCommentList () {
   try {
     const p1 = db.execute('SELECT COUNT(*) AS total FROM comments')
-    const p2 = db.execute('SELECT * FROM comments')
+    // const p2 = db.execute('SELECT * FROM comments')
+    const p2 = db.execute(`SELECT comments.id,(SELECT articles.title FROM articles WHERE comments.article_id = articles.id) AS title,comment,nick_name,created_at FROM comments`)
     const [res1, res2] = await Promise.allSettled([p1, p2])
     let total = 0
     let data = []
@@ -23,7 +24,7 @@ async function getCommentList () {
     }
     if (res2.status === 'fulfilled') {
       // @ts-ignore: Unreachable code error
-      data = res2.value[0][0]
+      data = res2.value[0]
     } else {
       throw res2.reason
     }

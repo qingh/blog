@@ -51,8 +51,20 @@ async function addLabel (params: ILabel) {
         message: `labels'name is required`
       }
     }
-    const sql = `INSERT INTO labels (name,created_at,updated_at) VALUES (?,NOW(),NOW())`
-    await db.execute(sql, [params.name])
+
+    {
+      const data = await db.execute('SELECT * FROM labels')
+      // @ts-ignore
+      if (data[0].length !== 0) {
+        return {
+          ...response.resError,
+          message: '资源已存在'
+        }
+      }
+    }
+
+    const sql = `INSERT INTO labels (name,author,created_at,updated_at) VALUES (?,?,NOW(),NOW())`
+    await db.execute(sql, [params.name, 'qingh'])// todo
     return {
       ...response.resSuccess
     }
@@ -69,12 +81,34 @@ async function addLabel (params: ILabel) {
 /** 编辑标签 */
 async function updateLabel (params: { id: number } & ILabel) {
   try {
-    if (typeof params.name === 'undefined') {
+    if (typeof params.name === 'undefined' || params.name === '') {
       return {
         ...response.resError,
         message: `labels'name is required`
       }
     }
+    {
+      const data = await db.execute(`SELECT * FROM labels WHERE name = '${params.name}'`)
+      // @ts-ignore
+      if (data[0].length !== 0) {
+        return {
+          ...response.resError,
+          message: '资源已存在'
+        }
+      }
+    }
+
+    {
+      const data = await db.execute(`SELECT * FROM labels WHERE id = ${params.id}`)
+      // @ts-ignore
+      if (data[0].length !== 1) {
+        return {
+          ...response.resError,
+          message: '资源不存在'
+        }
+      }
+    }
+
     const sql = `UPDATE labels SET name = ?,updated_at = NOW() WHERE id = ${params.id}`
     await db.execute(sql, [params.name])
     return {

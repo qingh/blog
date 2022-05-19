@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import css from './index.module.less'
 import { userService } from '@api/service'
+import { ILogin } from '@pages/userManage/types'
 
 const layout = {
   labelCol: { span: 5 },
@@ -29,11 +30,11 @@ export const Login = () => {
         onFinish={onFinish}
       >
         <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
-          <Input placeholder="请输入用户名" />
+          <Input placeholder="请输入用户名" autoComplete={'off'}/>
         </Form.Item>
 
         <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码' }]}>
-          <Input.Password placeholder="请输入密码" />
+          <Input.Password placeholder="请输入密码" autoComplete={'off'}/>
         </Form.Item>
 
         <Form.Item {...tailLayout} name="remember" valuePropName="checked">

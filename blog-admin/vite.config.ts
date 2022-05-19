@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    // extensions: ['ts', 'tsx', 'd.ts'],
     alias: [
       {
         find: '@api', replacement: resolve(__dirname, 'src/api')

@@ -108,10 +108,19 @@ async function publisArticle(params: IArticle) {
 /** 更新文章 */
 async function updateArticle(params: IArticle & { id: number }) {
   try {
-    const sql = `UPDATE articles SET label_id = ?,title = ?,content = ?,updated_at = NOW() WHERE id = ${params.id}`
-    const data = await db.execute(sql, [params.label_id, params.title, params.content])
+    const data = await db.execute(`SELECT * FROM articles WHERE id = ${params.id}`)
+    // @ts-ignore
+    if (data[0].length !== 1) {
+      return {
+        ...response.resError,
+        message: '资源不存在'
+      }
+    }
+
+    const sql1 = `UPDATE articles SET label_id = ?,title = ?,content = ?,updated_at = NOW() WHERE id = ${params.id}`
+    const data1 = await db.execute(sql1, [params.label_id, params.title, params.content])
     // @ts-ignore: Unreachable code error
-    if (data[0].affectedRows) {
+    if (data1[0].affectedRows) {
       return {
         ...response.resSuccess
       }

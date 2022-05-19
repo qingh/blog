@@ -1,15 +1,13 @@
-import { useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
-import { articleService } from '@api/service'
-import { IArticle, IAddArticle, ITableData } from './types'
-import { ILabel } from '@pages/labelManage/types'
+import { articleService, labelService } from '@api/service'
+import { IAddLabel, ITableData, ILabelList } from './types'
 
-interface IData extends IAddArticle {
+interface IData extends IAddLabel {
   id: number
 }
 
 interface IProps {
-  labelList: ILabel[]
   getDtaList: () => void
   tableData: ITableData
   onPageChange: (page: IPage) => void
@@ -24,41 +22,27 @@ export const List = (props: IProps) => {
       dataIndex: 'id'
     },
     {
-      title: '标题',
-      dataIndex: 'title'
+      title: '标签名称',
+      dataIndex: 'name'
     },
     {
-      title: '分类',
-      dataIndex: 'label_id',
-      render: (id: number) => {
-        const obj = props.labelList.find(item => item.id === id)
-        return <span>{obj?.name}</span>
-      }
-    },
-    {
-      title: '发布日期',
-      dataIndex: 'created_at'
-    },
-    {
-      title: '更新日期',
-      dataIndex: 'updated_at'
-    },
-    {
-      title: '浏览量',
-      dataIndex: 'browser'
-    },
-    {
-      title: '作者',
+      title: '创建人',
       dataIndex: 'author'
     },
     {
+      title: '创建时间',
+      dataIndex: 'created_at'
+    },
+    {
       title: '操作',
+      width: 200,
       dataIndex: 'operate',
-      render: (text: string, record: IArticle) => (
+      render: (text: string, record: ILabelList) => (
         <>
           <Popconfirm
             title="确认删除？"
             onConfirm={() => deleteItem(record)}
+            onCancel={() => { }}
             okButtonProps={{ loading }}
             okText="是"
             cancelText="否"
@@ -82,10 +66,10 @@ export const List = (props: IProps) => {
     }
   ]
 
-  /** 删除 */
-  async function deleteItem (record: IArticle) {
+  /** 删除标签 */
+  async function deleteItem (record: ILabelList) {
     setLoading(true)
-    const [err, res] = await articleService.delArticle(record.id)
+    const [err, res] = await labelService.delLabel(record.id)
     setLoading(false)
     if (err) return message.error(err.message)
     const { errorCode, message: msg } = res.data

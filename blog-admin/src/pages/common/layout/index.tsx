@@ -1,16 +1,14 @@
 import { createElement, useState, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from 'antd'
-import Icon, {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined
-} from '@ant-design/icons'
+import Icon from '@ant-design/icons'
 import Loading from '../loading'
 import { router } from '../../../router'
 import { MenuComponent } from './sidebar'
+import { TopHeader } from './header'
 import css from './index.module.less'
 
-const { Header, Sider, Content, Footer } = Layout
+const { Sider, Content, Footer } = Layout
 
 const Logo = () => {
   return (
@@ -30,12 +28,7 @@ export const Home = () => {
         <MenuComponent />
       </Sider>
       <Layout className="site-layout" style={{ overflow: 'auto' }}>
-        <Header style={{ padding: 0, background: 'white' }}>
-          {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: css.trigger,
-            onClick: () => setSollapsed(!collapsed)
-          })}
-        </Header>
+        <TopHeader collapsed={collapsed} setSollapsed={setSollapsed}/>
         <Content
           style={{
             padding: 24,

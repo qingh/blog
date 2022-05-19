@@ -1,13 +1,12 @@
-// import axios from './axios';
-import axios, { AxiosResponse } from 'axios'
+import { ILabelQuery } from './../pages/labelManage/types'
+import axios from 'axios'
+import { IAddArticle, IArticleQuery } from '@pages/articleManage/types'
+import { ICommentQuery } from '@pages/commentManage/types'
+import { IAddLabel } from '@pages/labelManage/types'
+import { ILogin, IUserQuery, IAddUser } from '@pages/userManage/types'
 
 axios.defaults.baseURL = '/api/v1'
 axios.defaults.timeout = 3000
-// axios.defaults
-
-function wrapAwait (promise: Promise<AxiosResponse>) {
-  return promise.then(res => [null, res]).catch(error => [error])
-}
 
 interface IHttp {
   url: string
@@ -20,13 +19,9 @@ function http ({ url, method = 'GET', data, headers }: IHttp) {
   if (method === 'GET' || method === 'DELETE') {
     let params = ''
     for (const key in data) {
-      if (typeof data[key] !== 'undefined') {
-        params += `&${key}=${data[key]}`
-      }
+      if (typeof data[key] !== 'undefined') params += `&${key}=${data[key]}`
     }
-    if (params !== '') {
-      url = `${url}?` + params.substring(1)
-    }
+    if (params !== '') url = `${url}?` + params.substring(1)
   }
   return axios({
     method,
@@ -35,41 +30,30 @@ function http ({ url, method = 'GET', data, headers }: IHttp) {
   }).then(res => [null, res]).catch(error => [error])
 }
 
-const menuService = {
-  getMenuList: params => wrapAwait(axios.get('/getMenuList', params))
-}
-
-const fileService = {
-  download: params => wrapAwait(axios.get('/download', params))
-  // upload: params => wrapAwait(axios.upload('/upload', params),
-}
-
 const articleService = {
-  articleList: (params: IArticleQuery & IPage) => http({ url: '/articles', data: params }),
-  addArticle: (params: IAddArticle) => http({ method: 'POST', url: '/articles', data: params }),
-  delArticle: (params:number) => http({ url: `/articles/${params}`, method: 'DELETE' }),
-  editArticle: (params:IAddArticle & { id: number }) => http({ url: `/articles/${params.id}`, method: 'PATCH', data: params })
+  articleList: (data: IArticleQuery & IPage) => http({ url: '/articles', data }),
+  addArticle: (data: IAddArticle) => http({ method: 'POST', url: '/articles', data }),
+  delArticle: (params: number) => http({ url: `/articles/${params}`, method: 'DELETE' }),
+  editArticle: (params: IAddArticle & { id: number }) => http({ url: `/articles/${params.id}`, method: 'PATCH', data: params })
 }
 
 const commentService = {
-  commentList: params => wrapAwait(axios.get('/comments', params)),
-  delComment: params => wrapAwait(axios.delete(`/comments/${params}`))
+  commentList: (data: ICommentQuery & IPage) => http({ url: '/comments', data }),
+  delComment: (id: number) => http({ method: 'DELETE', url: `/comments/${id}` })
 }
-
 const labelService = {
-  labelList: () => http({ url: '/labels' }),
-  addLabel: params => wrapAwait(axios.post('/labels', params)),
-  delLabel: params => wrapAwait(axios.delete(`/labels/${params}`)),
-  editLabel: params => http({ url: `/labels/${params.id}`, method: 'PATCH', data: params })
+  labelList: (data?: ILabelQuery & IPage) => http({ url: '/labels', data }),
+  addLabel: (data: IAddLabel) => http({ method: 'POST', url: '/labels', data }),
+  delLabel: (id: number) => http({ method: 'DELETE', url: `/labels/${id}` }),
+  editLabel: (data: IAddLabel & { id: number }) => http({ url: `/labels/${data.id}`, method: 'PATCH', data })
 }
 
 const userService = {
-  // login: (params: ILogin) => wrapAwait(axios.post('/users/login', params)),
-  login: (params: ILogin) => http({ url: '/users/login', method: 'POST', data: params }),
-  userList: () => http({ url: '/users' }),
-  addUser: params => wrapAwait(axios.post('/users', params)),
-  delUser: params => wrapAwait(axios.delete(`/users/${params}`)),
-  editUser: params => wrapAwait(axios.patch(`/users/${params.id}`, params))
+  login: (data: ILogin) => http({ url: '/users/login', method: 'POST', data }),
+  userList: (data?:IUserQuery & IPage) => http({ url: '/users', data }),
+  addUser: (data:IAddUser) => http({ method: 'POST', url: '/users', data }),
+  delUser: (id:number) => http({ method: 'DELETE', url: `/users/${id}` }),
+  editUser: (data:IAddUser& { id: number }) => http({ method: 'PATCH', url: `/users/${data.id}`, data })
 }
 
-export { menuService, fileService, articleService, commentService, labelService, userService }
+export { articleService, commentService, labelService, userService }

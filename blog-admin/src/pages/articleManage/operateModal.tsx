@@ -1,7 +1,8 @@
-import { Fragment, useState, useEffect } from 'react'
-import { Modal, Row, Col, Form, Input, Table, Button, Select, message } from 'antd'
-import { articleService, labelService } from '@api/service'
-
+import { useState, useEffect } from 'react'
+import { Modal, Form, Input, Button, Select, message } from 'antd'
+import { articleService } from '@api/service'
+import { IAddArticle } from './types'
+import { ILabel } from '@pages/labelManage/types'
 const { TextArea } = Input
 const { Option } = Select
 
@@ -17,12 +18,12 @@ interface IProps {
   labelList: ILabel[]
   modal: IModal
   toogleModal: (type: number, visible: boolean, data?: { id: number } & IAddArticle) => void
-  articleList: () => void
+  getDtaList: () => void
 }
 export const OperateModal = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const [id, setId] = useState(0)
-  const [form1] = Form.useForm()
+  const [form] = Form.useForm()
 
   useEffect(() => {
     const modal = props.modal
@@ -30,7 +31,7 @@ export const OperateModal = (props: IProps) => {
       if (modal.data) {
         const { id, title, label_id, content } = modal.data
         setId(id)
-        form1.setFieldsValue({
+        form.setFieldsValue({
           title, label_id, content
         })
       }
@@ -38,7 +39,7 @@ export const OperateModal = (props: IProps) => {
   }, [props.modal])
 
   /** 发布文章 */
-  async function addArticle (values: IAddArticle) {
+  async function addItem (values: IAddArticle) {
     setLoading(true)
     const [err, res] = await articleService.addArticle(values)
     setLoading(false)
@@ -47,14 +48,14 @@ export const OperateModal = (props: IProps) => {
     if (errorCode) {
       // 刷新列表
       props.toogleModal(props.modal.type, false)
-      props.articleList()
+      props.getDtaList()
       return message.success(msg)
     }
     message.error(msg)
   }
 
   /** 编辑文章 */
-  async function editArticle (values: IAddArticle & { id: number }) {
+  async function editItem (values: IAddArticle & { id: number }) {
     setLoading(true)
     const [err, res] = await articleService.editArticle(values)
     setLoading(false)
@@ -63,7 +64,7 @@ export const OperateModal = (props: IProps) => {
     if (errorCode) {
       // 刷新列表
       props.toogleModal(props.modal.type, false)
-      props.articleList()
+      props.getDtaList()
       return message.success(msg)
     }
     message.error(msg)
@@ -87,27 +88,29 @@ export const OperateModal = (props: IProps) => {
           key="submit"
           type="primary"
           loading={loading}
-          onClick={() => form1.submit()}
+          onClick={() => form.submit()}
         >
-          {props.modal.type ? '编辑' : '发布'}
+          确定
         </Button>
       ]}
     >
       <Form
         layout="vertical"
-        form={form1}
+        form={form}
         preserve={false}
-        onFinish={(values: IAddArticle) => props.modal.type ? editArticle({ ...values, id }) : addArticle(values)}
+        onFinish={(values: IAddArticle) => props.modal.type ? editItem({ ...values, id }) : addItem(values)}
       >
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入文章标题' }]}>
-          <Input placeholder="请输入文章标题" />
+          <Input placeholder="请输入文章标题" autoComplete={'off'} />
         </Form.Item>
         <Form.Item label="文章分类" name="label_id" rules={[{ required: true, message: '请选择文章分类' }]}>
-          <Select
+          <Select<string | number, { value: string; children: string }>
             showSearch
             placeholder="请选择文章分类"
             optionFilterProp="children"
-            filterOption={(input, option) => option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            filterOption={(input, option) =>
+              option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
           >
             {props.labelList.map((item: ILabel) => (
               <Option key={item.id} value={item.id}>

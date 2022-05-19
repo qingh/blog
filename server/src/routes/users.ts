@@ -9,12 +9,24 @@ router.get('/', async (ctx, next) => {
   ctx.body = await Users.getUserList()
 })
 
+router.post('/', async (ctx, next) => {
+  const { username } = ctx.request.body
+  ctx.body = await Users.addUser({ username })
+})
+
 router.patch('/:id', async (ctx, next) => {
-  ctx.body = '编辑用户'
+  const { id, username } = ctx.request.body
+  console.log(id)
+  console.log(username)
+  ctx.body = await Users.updateUser({
+    id,
+    username
+  })
 })
 
 router.delete('/:id', async (ctx, next) => {
-  ctx.body = '删除用户'
+  const { id = 0 } = ctx.params
+  ctx.body = await Users.deleteUser(Number(id))
 })
 
 router.post('/login', async (ctx, next) => {
