@@ -29,7 +29,8 @@ router.get('/', async function (ctx, next) {
 	logger.info('客户端IP是：' + common.getClientIp(ctx.req));
 	try {
 		let id = ctx.query.id,
-			sql = `SELECT article.*,label.name FROM article INNER JOIN label on article.labelId = label.labelId where article.articleId = ${id}`,
+			// sql = `SELECT articles.*,labels.name FROM articles INNER JOIN labels on articles.label_id = labels.label_id where articles.article_id = ${id}`,
+			sql = `SELECT articles.*,labels.name FROM articles INNER JOIN labels on articles.label_id = labels.label_id where articles.article_id = 67`,
 			[data] = await db.query(sql);
 
 		if (data.length === 0) {
@@ -42,6 +43,7 @@ router.get('/', async function (ctx, next) {
 			await next();
 		}
 	} catch (e) {
+		console.log(e);
 		await ctx.render('500', {
 			title: '500',
 			msg: e
@@ -54,7 +56,7 @@ router.get('/', async function (ctx, next) {
 		let flag1,
 			flag2,
 			id = parseInt(ctx.query.id),
-			sql = `(SELECT * FROM article WHERE articleId < ${id} ORDER BY articleId desc LIMIT 0,1) union all (SELECT * from article where articleId > ${id} LIMIT 0,1)`,
+			sql = `(SELECT * FROM articles WHERE article_id < ${id} ORDER BY article_id desc LIMIT 0,1) union all (SELECT * from articles where article_id > ${id} LIMIT 0,1)`,
 			[aboutData] = await db.query(sql);
 
 		if (aboutData.length) { //如果有数据
@@ -78,6 +80,7 @@ router.get('/', async function (ctx, next) {
 		ctx.flag2 = flag2;
 		await next();
 	} catch (e) {
+		console.log('2222:',e);
 		await ctx.render('500', {
 			title: '500',
 			msg: e
@@ -90,9 +93,9 @@ router.get('/', async function (ctx) {
 		let id = parseInt(ctx.query.id),
 			sql = `SELECT
 				@row := @row + 1 as floor,
-				comment.*
-				FROM comment, (SELECT @row := 0) t
-				WHERE aId = ${id}`,
+				comments.*
+				FROM comments, (SELECT @row := 0) t
+				WHERE a_id = ${id}`,
 			[msgData] = await db.query(sql);
 
 		for (let d of msgData) {
@@ -109,6 +112,7 @@ router.get('/', async function (ctx) {
 			msgLen: msgData.length
 		});
 	} catch (e) {
+		console.log('3333:',e);
 		await ctx.render('500', {
 			title: '500',
 			msg: e

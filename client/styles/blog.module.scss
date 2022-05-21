@@ -1,0 +1,131 @@
+#loading {
+  position: absolute;
+  left: 124px;
+  top: 110px;
+  z-index: 10;
+}
+
+.blog {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.bread-crumb {
+  margin: 0;
+  padding: 25px 0;
+  font-size: 16px;
+
+  a {
+    text-decoration: none;
+  }
+
+  b {
+    margin: 0 10px;
+    color: #666;
+  }
+
+  span {
+    color: #666;
+  }
+}
+
+.main {
+  overflow: hidden;
+
+  .left {
+    float: left;
+    width: 910px;
+    border-radius: 8px;
+    background: white;
+
+    h3 {
+      font-weight: normal;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+      padding: 20px 0 20px 20px;
+      margin: 0;
+    }
+
+    .no-article {
+      font-size: 14px;
+      text-align: center;
+      line-height: 60px;
+    }
+  }
+
+  .list {
+    overflow: hidden;
+    font-size: 14px;
+    padding: 0 15px 30px;
+    list-style: none;
+
+    li {
+      overflow: hidden;
+      line-height: 25px;
+      margin-top: 20px;
+      border-bottom: 1px dashed #dfdfdf;
+
+      span {
+        float: right;
+        font-size: 12px;
+      }
+    }
+
+    a {
+      float: left;
+      color: #545454;
+      white-space: nowrap;
+      word-wrap: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+    }
+  }
+
+  .right {
+    float: right;
+    width: 280px;
+    .item {
+      overflow: hidden;
+      position: relative;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: white;
+    
+      h3 {
+        height: 30px;
+        line-height: 30px;
+        padding: 5px;
+        margin: 0;
+        font-size: 16px;
+        font-weight: normal;
+        color: #FFFFFF;
+        background: #390;
+        border-bottom: 1px solid #006600;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        text-indent: 0.5em;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    ul {
+      padding: 0;
+      list-style: none;
+
+      li {
+        text-indent: 1em;
+        padding: 10px 5px;
+        border-bottom: 1px solid #DADFE1;
+        border-top: 1px solid #FFFFFF;
+        overflow: hidden;
+        a{
+          font-size: 12px;
+          color: #333;
+          text-indent: 1em;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

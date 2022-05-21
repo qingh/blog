@@ -9,6 +9,7 @@ interface IUser {
   password: string
 }
 
+
 /** 用户列表 */
 async function getUserList () {
   try {
@@ -127,6 +128,13 @@ async function updateUser (params: { id: number } & IAddUser) {
       return {
         ...response.resError,
         message: `username is required`
+      }
+    }
+
+    if (params.id === 1) { // 超级管理员
+      return {
+        ...response.resError,
+        message: '权限不足'
       }
     }
 

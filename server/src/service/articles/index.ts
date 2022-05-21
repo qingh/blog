@@ -3,6 +3,7 @@ import { response } from '../../utils/index.js'
 
 /** 文章列表 */
 async function getArticlesList(params: ISearch) {
+  console.log(params)
   try {
     const offset = params.current * params.pageSize - params.pageSize
     const p1 = db.execute('SELECT COUNT(*) AS total FROM articles')
@@ -42,7 +43,7 @@ async function getArticlesList(params: ISearch) {
 /** 文章详情 */
 async function getArticlesDetail(id: number) {
   try {
-    const data = await db.execute(`SELECT * FROM articles WHERE id = ${id}`)
+    const data = await db.execute(`SELECT *,(SELECT label FROM labels WHERE id = articles.label_id) AS label FROM articles WHERE id = ${id}`)
     // @ts-ignore: Unreachable code error
     if (data[0].length) {
       return {
@@ -53,7 +54,46 @@ async function getArticlesDetail(id: number) {
     } else {
       return {
         ...response.resError,
-        message: 'Not Found'
+        message: '资源不存在'
+      }
+    }
+  } catch (err: unknown) {
+    let msg = 'Unexpected error'
+    if (err instanceof Error) msg = err.message
+    return {
+      ...response.resError,
+      message: msg
+    }
+  }
+}
+
+async function getArticlesContext(id: number) {
+  try {
+    const prevSql = `SELECT id,title FROM articles WHERE id < ${id} ORDER BY id DESC limit 1`
+    const nextSql = `SELECT id,title FROM articles WHERE id > ${id} ORDER BY id limit 1`
+    const prevPromise = db.execute(prevSql)
+    const nextPromise = db.execute(nextSql)
+
+    const [res1, res2] = await Promise.allSettled([prevPromise, nextPromise])
+    let prevData = {}
+    let nextData = {}
+    if (res1.status === 'fulfilled') {
+      // @ts-ignore: Unreachable code error
+      prevData = res1.value[0][0]
+    } else {
+      throw res1.reason
+    }
+    if (res2.status === 'fulfilled') {
+      // @ts-ignore: Unreachable code error
+      nextData = res2.value[0][0]
+    } else {
+      throw res2.reason
+    }
+    return {
+      ...response.resSuccess,
+      data: {
+        prevData,
+        nextData
       }
     }
   } catch (err: unknown) {
@@ -169,6 +209,7 @@ async function deleteArticle(id: number) {
 export {
   getArticlesList,
   getArticlesDetail,
+  getArticlesContext,
   publisArticle,
   updateArticle,
   deleteArticle

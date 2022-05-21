@@ -114,7 +114,7 @@ export const OperateModal = (props: IProps) => {
           >
             {props.labelList.map((item: ILabel) => (
               <Option key={item.id} value={item.id}>
-                {item.name}
+                {item.label}
               </Option>
             ))}
           </Select>

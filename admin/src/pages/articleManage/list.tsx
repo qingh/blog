@@ -32,7 +32,7 @@ export const List = (props: IProps) => {
       dataIndex: 'label_id',
       render: (id: number) => {
         const obj = props.labelList.find(item => item.id === id)
-        return <span>{obj?.name}</span>
+        return <span>{obj?.label}</span>
       }
     },
     {

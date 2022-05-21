@@ -96,7 +96,7 @@ export const OperateModal = (props: IProps) => {
         preserve={false}
         onFinish={(values: IAddLabel) => props.modal.type ? editItem({ ...values, id }) : addItem(values)}
       >
-        <Form.Item label="标签名称" name="name" rules={[{ required: true, message: '请输入标签名称' }]}>
+        <Form.Item label="标签名称" name="label" rules={[{ required: true, message: '请输入标签名称' }]}>
           <Input placeholder="请输入标签名称" autoComplete={'off'}/>
         </Form.Item>
       </Form>

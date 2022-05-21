@@ -1,0 +1,38 @@
+.about {
+  width: 65%;
+  min-width: 640px;
+  margin: 0 auto;
+
+  dl {
+    color: #666;
+    text-align: right;
+    margin-top: 120px;
+    line-height: 30px;
+  }
+}
+
+.bread-crumb {
+  margin: 0;
+  padding: 25px 0;
+  font-size: 16px;
+
+  a {
+    text-decoration: none;
+  }
+
+  b {
+    margin: 0 10px;
+    color: #666;
+  }
+
+  span {
+    color: #666;
+  }
+}
+
+.about-blog p {
+  text-indent: 2em;
+  font-size: 16px;
+  color: #666;
+  line-height: 30px;
+}

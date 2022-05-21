@@ -1,7 +1,7 @@
 
 export interface ILabel {
   id: number
-  name: string
+  label: string
 }
 
 export interface ILabelQuery {// 此处不要继承上面

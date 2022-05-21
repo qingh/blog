@@ -2,7 +2,7 @@ import { db } from '../../database/mysql.js'
 import { response } from '../../utils/index.js'
 
 interface ILabel {
-  name: string
+  label: string
 }
 
 /** 标签列表 */
@@ -45,15 +45,15 @@ async function getLabelList () {
 /** 新增标签 */
 async function addLabel (params: ILabel) {
   try {
-    if (typeof params.name === 'undefined') {
+    if (typeof params.label === 'undefined') {
       return {
         ...response.resError,
-        message: `labels'name is required`
+        message: `label is required`
       }
     }
 
     {
-      const data = await db.execute('SELECT * FROM labels')
+      const data = await db.execute(`SELECT * FROM labels WHERE label = '${params.label}'`)
       // @ts-ignore
       if (data[0].length !== 0) {
         return {
@@ -63,8 +63,8 @@ async function addLabel (params: ILabel) {
       }
     }
 
-    const sql = `INSERT INTO labels (name,author,created_at,updated_at) VALUES (?,?,NOW(),NOW())`
-    await db.execute(sql, [params.name, 'qingh'])// todo
+    const sql = `INSERT INTO labels (label,author,created_at,updated_at) VALUES (?,?,NOW(),NOW())`
+    await db.execute(sql, [params.label, 'qingh'])// todo
     return {
       ...response.resSuccess
     }
@@ -81,14 +81,14 @@ async function addLabel (params: ILabel) {
 /** 编辑标签 */
 async function updateLabel (params: { id: number } & ILabel) {
   try {
-    if (typeof params.name === 'undefined' || params.name === '') {
+    if (typeof params.label === 'undefined' || params.label === '') {
       return {
         ...response.resError,
         message: `labels'name is required`
       }
     }
     {
-      const data = await db.execute(`SELECT * FROM labels WHERE name = '${params.name}'`)
+      const data = await db.execute(`SELECT * FROM labels WHERE label = '${params.label}'`)
       // @ts-ignore
       if (data[0].length !== 0) {
         return {
@@ -109,8 +109,8 @@ async function updateLabel (params: { id: number } & ILabel) {
       }
     }
 
-    const sql = `UPDATE labels SET name = ?,updated_at = NOW() WHERE id = ${params.id}`
-    await db.execute(sql, [params.name])
+    const sql = `UPDATE labels SET label = ?,updated_at = NOW() WHERE id = ${params.id}`
+    await db.execute(sql, [params.label])
     return {
       ...response.resSuccess
     }
@@ -150,9 +150,28 @@ async function deleteLabel (id: number) {
   }
 }
 
+/** 标签列表并返回该标签关联的文章数量 */
+async function articleNumOfLabel () {
+  try {
+    const data = await db.execute(`SELECT id,label,(SELECT COUNT(*) FROM articles WHERE articles.label_id = labels.id) AS num FROM labels`)
+    return {
+      ...response.resSuccess,
+      data: data[0]
+    }
+  } catch (err: unknown) {
+    let msg = 'Unexpected error'
+    if (err instanceof Error) msg = err.message
+    return {
+      ...response.resError,
+      message: msg
+    }
+  }
+}
+
 export {
   getLabelList,
   addLabel,
   updateLabel,
-  deleteLabel
+  deleteLabel,
+  articleNumOfLabel
 }

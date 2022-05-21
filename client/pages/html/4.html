@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>正在学习nodejs</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="keywords" content="刘庆华，个人博客，个人网站，网站开发">
+  <meta name="description" content="刘庆华的个人博客，专注于全栈开发">
+  <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="./css/article.css">
+</head>
+
+<body>
+  <div class="article">
+    <div class="bread-crumb"><a href="/">博客首页</a><b>></b><a href="/blog">日志列表</a><b>></b><span>日志详情</span></div>
+    <div class="top">
+      <p class="type">分类：<a href="javascript:;">nodejs</a></p>
+      <ul></ul>
+    </div>
+    <div class="main">
+      <h1 class="title">正在学习nodejs</h1>
+      <p class="author">作者：liuqh</p>
+      <p class="date">日期：2022-05-20 15:07:38</p><iframe id="mainFrame" name="mainFrame" src="https://www.a.com"
+        width="100%" height="1000" frameborder="no" scrolling="no"></iframe>
+    </div>
+    <div class="leave-word">
+      <h2>我要发表看法</h2>
+      <dl>
+        <dt>* 您的留言：</dt>
+        <dd><textarea id="msgContent" placeholder="请输入留言"></textarea></dd>
+      </dl>
+      <dl>
+        <dt>* 您的昵称：</dt>
+        <dd><input id="nickName" type="text"></dd>
+      </dl>
+      <dl>
+        <dt>头像：（建议尺寸72*72，支持 jpg | png | bmp | gif）</dt>
+        <dd><input id="picker" type="file" name="logo"><span class="sel-file" id="selFile"
+            title="images/default.jpg">未选择任何文件</span><img id="loading" src="./images/loading.gif"></dd>
+      </dl><input class="publish" id="publish" type="button" value="发表">
+    </div>
+  </div>
+  <script src="./js/jquery-3.1.1.js"></script>
+  <script src="./js/layer/layer.js"></script>
+  <script src="./js/article.js"></script>
+</body>
+
+</html>

@@ -20,6 +20,12 @@ router.get('/:id', async (ctx, next) => {
   ctx.body = await Articles.getArticlesDetail(Number(id))
 })
 
+/** 当前文章的上下文（上一页、下一页） */
+router.get('/:id/context', async (ctx, next) => {
+  const { id = 0 } = ctx.params
+  ctx.body = await Articles.getArticlesContext(Number(id))
+})
+
 /** 发布文章 */
 router.post('/', async (ctx, next) => {
   ctx.body = await Articles.publisArticle(ctx.request.body)

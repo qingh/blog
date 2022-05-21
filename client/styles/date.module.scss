@@ -1,0 +1,70 @@
+.date {
+  position: relative;
+  font-size: 12px;
+  padding: 0 20px 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: white;
+}
+
+.date-change {
+  position: relative;
+  height: 32px;
+
+  p {
+    position: absolute;
+    top: 12px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  a {
+    position: absolute;
+    top: 13px;
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    color: black;
+    line-height: 12px;
+    text-decoration: none;
+  }
+
+  .date-prev {
+    left: 14px;
+  }
+
+  .date-next {
+    right: 14px;
+  }
+
+  .month {
+    float: right;
+    margin: 12px 75px 0 0
+  }
+}
+
+.date-tab {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    color: #666;
+    height: 25px;
+  }
+
+  td {
+    border: 1px solid #efefef;
+    height: 24px;
+    text-align: center;
+    color: #777;
+    font-family: tahoma;
+  }
+
+  .date-cutTime {
+    color: #fff;
+    background: #f60;
+  }
+}
