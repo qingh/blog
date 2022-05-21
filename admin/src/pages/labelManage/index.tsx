@@ -8,6 +8,7 @@ import { IAddLabel, ILabelQuery, ITableData } from './types'
 
 interface IData extends IAddLabel {
   id: number
+  label:string
 }
 
 interface IModal {

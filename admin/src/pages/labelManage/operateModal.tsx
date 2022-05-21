@@ -6,6 +6,7 @@ import { ILabel } from '@pages/labelManage/types'
 
 interface IData extends IAddLabel {
   id: number
+  label:string
 }
 
 interface IModal {
@@ -27,9 +28,9 @@ export const OperateModal = (props: IProps) => {
     const modal = props.modal
     if (modal.type === 1) {
       if (modal.data) {
-        const { id, name } = modal.data
+        const { id, label } = modal.data
         setId(id)
-        form.setFieldsValue({ name })
+        form.setFieldsValue({ label })
       }
     }
   }, [props.modal])

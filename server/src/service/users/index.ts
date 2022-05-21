@@ -1,3 +1,4 @@
+import { ParameterizedContext } from 'koa'
 import { db } from '../../database/mysql.js'
 import { response } from '../../utils/index.js'
 
@@ -9,12 +10,11 @@ interface IUser {
   password: string
 }
 
-
 /** 用户列表 */
 async function getUserList () {
   try {
     const p1 = db.execute('SELECT COUNT(*) AS total FROM users')
-    const p2 = db.execute('SELECT id,username,created_at,admin FROM users')
+    const p2 = db.execute('SELECT id,username,created_at,updated_at,admin FROM users')
     const [res1, res2] = await Promise.allSettled([p1, p2])
     let total = 0
     let data = []
@@ -48,24 +48,29 @@ async function getUserList () {
 }
 
 /** 登录 */
-async function login (params:IUser) {
+// async function login (params:IUser) {
+async function login (ctx:ParameterizedContext) {
+  console.log(ctx.request.body)
+  const { username, password } = ctx.request.body
   try {
-    if (typeof params.username === 'undefined') {
+    if (typeof username === 'undefined') {
       return {
         ...response.resError,
         message: `username is required`
       }
     }
-    if (typeof params.password === 'undefined') {
+    if (typeof password === 'undefined') {
       return {
         ...response.resError,
         message: `password is required`
       }
     }
     const sql = `SELECT * FROM users WHERE username = ? AND password = ?`
-    const data = await db.execute(sql, [params.username, params.password])
+    const data = await db.execute(sql, [username, password])
     // @ts-ignore: Unreachable code error
     if (data[0].length) {
+      // 登录成功
+      ctx.cookies.set('aaa', 'bbb', { maxAge: 10 * 60 * 1000, overwrite: false })
       return {
         ...response.resSuccess
       }

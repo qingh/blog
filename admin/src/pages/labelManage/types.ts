@@ -6,17 +6,17 @@ export interface ILabel {
 
 export interface ILabelQuery {// 此处不要继承上面
   id: number
-  name: string
+  label: string
   author: string
 }
 
 export interface IAddLabel {
-  name: string
+  label: string
 }
 
 export interface ILabelList {
   id: number
-  name: string
+  label: string
   author: string
   created_at: string
   updated_at: string

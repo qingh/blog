@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { baseUrl } from '../config';
 import css from '../styles/blog.module.scss';
 import { Date } from '../components/date';
+import { format } from '../utils';
 
 interface IArticleList {
   id: number
@@ -16,11 +17,12 @@ interface IArticleList {
 
 interface ILabelNum {
   id: number
-  name: string
+  label: string
   num: number
 }
 
 export default function Blog({ articleList, labelNum }: { articleList: IArticleList[], labelNum: ILabelNum[] }) {
+  console.log(articleList);
   return (
     <div className={css.blog}>
       <div className={css['bread-crumb']}> <Link href="/">博客首页</Link><b>{'>'}</b><span>日志列表</span></div>
@@ -28,14 +30,17 @@ export default function Blog({ articleList, labelNum }: { articleList: IArticleL
         <div className={css.left}>
           <h3>最新文章</h3>
           {
-            articleList.length ? <ul className={css.list}>
-              {articleList.map(item => <li key={item.id}>
-                <Link href={`/article?id=${item.id}`} as={`/article/${item.id}`}>{item.title}</Link>
-                <span title="0条评论">{item.created_at} （{item.browser}）</span>
-              </li>)}
-            </ul> : <p className={css['no-article']}>暂无文章</p>
+            articleList.length ? (
+              <ul className={css.list}>
+                {articleList.map(item => <li key={item.id}>
+                  <Link href={`/article?id=${item.id}`} as={`/article/${item.id}`}>{item.title}</Link>
+                  <span title={`${item.browser}条评论`}>（{item.browser}）</span>
+                  <span>{format(item.created_at)} </span>
+                </li>)}
+              </ul>
+            ) :
+              <p className={css['no-article']}>暂无文章</p>
           }
-
         </div>
         <div className={css.right}>
           <Date />
@@ -43,7 +48,7 @@ export default function Blog({ articleList, labelNum }: { articleList: IArticleL
             <h3>分类</h3>
             <ul>
               {
-                labelNum.map(item => <li key={item.id}><a href="#" onClick={(ev) => ev.preventDefault()} title={`${item.name}  ${item.num} 篇`}>{item.name} （{item.num}）</a></li>)
+                labelNum.map(item => <li key={item.id}><a href="#" onClick={(ev) => ev.preventDefault()} title={`${item.label}  ${item.num} 篇`}>{item.label} （{item.num}）</a></li>)
               }
             </ul>
           </div>
@@ -75,6 +80,8 @@ export async function getStaticProps() {
     }
   }
 
+  console.log(result1);
+  console.log(result2);
   return {
     props: {
       articleList: result1,

@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
 import { commentService } from '@api/service'
 import { IComment, ITableData } from './types'
+import { format } from '../../utils'
 
 interface IProps {
   getDtaList: () => void
@@ -30,7 +31,8 @@ export const List = (props: IProps) => {
     },
     {
       title: '评论日期',
-      dataIndex: 'created_at'
+      dataIndex: 'created_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
     },
     {
       title: '操作',

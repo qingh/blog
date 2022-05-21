@@ -3,6 +3,7 @@ import { Popconfirm, Table, Button, message } from 'antd'
 import { articleService } from '@api/service'
 import { IArticle, IAddArticle, ITableData } from './types'
 import { ILabel } from '@pages/labelManage/types'
+import { format } from '../../utils'
 
 interface IData extends IAddArticle {
   id: number
@@ -37,11 +38,13 @@ export const List = (props: IProps) => {
     },
     {
       title: '发布日期',
-      dataIndex: 'created_at'
+      dataIndex: 'created_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
     },
     {
       title: '更新日期',
-      dataIndex: 'updated_at'
+      dataIndex: 'updated_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
     },
     {
       title: '浏览量',

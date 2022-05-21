@@ -1,7 +1,8 @@
-import { Fragment, useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
-import { articleService, labelService, userService } from '@api/service'
+import { userService } from '@api/service'
 import { IAddUser, ITableData, IUserList } from './types'
+import { format } from '../../utils'
 
 interface IData extends IAddUser {
   id: number
@@ -27,7 +28,13 @@ export const List = (props: IProps) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'created_at'
+      dataIndex: 'created_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updated_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
     },
     {
       title: '备注',

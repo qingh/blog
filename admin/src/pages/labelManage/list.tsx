@@ -2,9 +2,11 @@ import { Fragment, useState, useEffect } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
 import { articleService, labelService } from '@api/service'
 import { IAddLabel, ITableData, ILabelList } from './types'
+import { format } from '../../utils'
 
 interface IData extends IAddLabel {
   id: number
+  label: string
 }
 
 interface IProps {
@@ -23,7 +25,7 @@ export const List = (props: IProps) => {
     },
     {
       title: '标签名称',
-      dataIndex: 'name'
+      dataIndex: 'label'
     },
     {
       title: '创建人',
@@ -31,7 +33,13 @@ export const List = (props: IProps) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'created_at'
+      dataIndex: 'created_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updated_at',
+      render: (text:string) => <span>{format(new Date(text))}</span>
     },
     {
       title: '操作',

@@ -30,7 +30,7 @@ router.delete('/:id', async (ctx, next) => {
 })
 
 router.post('/login', async (ctx, next) => {
-  ctx.body = await Users.login(ctx.request.body)
+  ctx.body = await Users.login(ctx)
 })
 
 export {
