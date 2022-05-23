@@ -116,7 +116,7 @@
 }
 
 .msg .photo {
-	width: 72px;
+	width: 48px;
 	float: left;
 }
 
@@ -128,7 +128,7 @@
 .msg .photo span {
 	display: block;
 	text-align: center;
-	font-size: 12px;
+	font-size: 14px;
 	color: #666;
 	margin-top: 8px;
 	text-overflow: ellipsis;
@@ -137,7 +137,7 @@
 }
 
 .msg .msg-right {
-	margin-left: 100px;
+	margin-left: 80px;
 }
 
 .msg .msg-cnt {
@@ -157,7 +157,6 @@
 
 .msg-info p {
 	float: right;
-	margin: 4px 0 0;
 	font-size: 14px;
 	color: grey;
 }
@@ -246,16 +245,7 @@
 	float: left;
 	width: 330px;
 	height: 40px;
-	line-height: 40px;
-	padding: 0 4px;
-	font-size: 14px;
-	color: gray;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	box-sizing: border-box;
 	border: 1px solid #d3d3d3;
-  background-color: white;
 }
 
 #loading {

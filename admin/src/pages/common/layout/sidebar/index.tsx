@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons'
 
-import { router } from '../../../../router'
+import { router as originalRouter } from '../../../../router'
 import { useNavigate } from 'react-router-dom'
 
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub4']
+
+const router = originalRouter.slice(0, originalRouter.length - 1)
 
 export const MenuComponent = () => {
   const [openKeys, setOpenKeys] = useState(['sub1'])
@@ -21,6 +22,7 @@ export const MenuComponent = () => {
     }
   }
 
+  //
   return (
     <Menu
       onClick={({ key }) => {

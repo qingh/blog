@@ -1,12 +1,9 @@
+import { ParameterizedContext } from 'koa'
 import { db } from '../../database/mysql.js'
 import { response } from '../../utils/index.js'
 
-interface ILabel {
-  label: string
-}
-
 /** 标签列表 */
-async function getLabelList () {
+async function getLabelList(ctx: ParameterizedContext) {
   try {
     const p1 = db.execute('SELECT COUNT(*) AS total FROM labels')
     const p2 = db.execute('SELECT * FROM labels')
@@ -43,9 +40,10 @@ async function getLabelList () {
 }
 
 /** 新增标签 */
-async function addLabel (params: ILabel) {
+async function addLabel(ctx: ParameterizedContext) {
+  const { label } = ctx.request.body
   try {
-    if (typeof params.label === 'undefined') {
+    if (typeof label === 'undefined') {
       return {
         ...response.resError,
         message: `label is required`
@@ -53,7 +51,7 @@ async function addLabel (params: ILabel) {
     }
 
     {
-      const data = await db.execute(`SELECT * FROM labels WHERE label = '${params.label}'`)
+      const data = await db.execute(`SELECT * FROM labels WHERE label = '${label}'`)
       // @ts-ignore
       if (data[0].length !== 0) {
         return {
@@ -64,7 +62,7 @@ async function addLabel (params: ILabel) {
     }
 
     const sql = `INSERT INTO labels (label,author,created_at,updated_at) VALUES (?,?,NOW(),NOW())`
-    await db.execute(sql, [params.label, 'qingh'])// todo
+    await db.execute(sql, [label, 'qingh'])// todo
     return {
       ...response.resSuccess
     }
@@ -79,16 +77,18 @@ async function addLabel (params: ILabel) {
 }
 
 /** 编辑标签 */
-async function updateLabel (params: { id: number } & ILabel) {
+async function updateLabel(ctx: ParameterizedContext) {
+  const { id = 0 } = ctx.params
+  const { label } = ctx.request.body
   try {
-    if (typeof params.label === 'undefined' || params.label === '') {
+    if (typeof label === 'undefined' || label === '') {
       return {
         ...response.resError,
         message: `labels'name is required`
       }
     }
     {
-      const data = await db.execute(`SELECT * FROM labels WHERE label = '${params.label}'`)
+      const data = await db.execute(`SELECT * FROM labels WHERE label = '${label}'`)
       // @ts-ignore
       if (data[0].length !== 0) {
         return {
@@ -99,7 +99,7 @@ async function updateLabel (params: { id: number } & ILabel) {
     }
 
     {
-      const data = await db.execute(`SELECT * FROM labels WHERE id = ${params.id}`)
+      const data = await db.execute(`SELECT * FROM labels WHERE id = ${id}`)
       // @ts-ignore
       if (data[0].length !== 1) {
         return {
@@ -109,8 +109,8 @@ async function updateLabel (params: { id: number } & ILabel) {
       }
     }
 
-    const sql = `UPDATE labels SET label = ?,updated_at = NOW() WHERE id = ${params.id}`
-    await db.execute(sql, [params.label])
+    const sql = `UPDATE labels SET label = ?,updated_at = NOW() WHERE id = ${id}`
+    await db.execute(sql, [label])
     return {
       ...response.resSuccess
     }
@@ -125,7 +125,8 @@ async function updateLabel (params: { id: number } & ILabel) {
 }
 
 /** 删除标签 */
-async function deleteLabel (id: number) {
+async function deleteLabel(ctx: ParameterizedContext) {
+  const { id = 0 } = ctx.params
   try {
     const sql = `DELETE FROM labels WHERE id = ${id}`
     const data = await db.execute(sql)
@@ -151,7 +152,7 @@ async function deleteLabel (id: number) {
 }
 
 /** 标签列表并返回该标签关联的文章数量 */
-async function articleNumOfLabel () {
+async function articleNumOfLabel(ctx: ParameterizedContext) {
   try {
     const data = await db.execute(`SELECT id,label,(SELECT COUNT(*) FROM articles WHERE articles.label_id = labels.id) AS num FROM labels`)
     return {

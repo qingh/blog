@@ -20,7 +20,6 @@ app.use(bodyparser({
 app.use(json())
 app.use(logger())
 app.use(koaStatic(__dirname + '\\public'))
-console.log('###', __dirname + '\\public')
 
 app.use(views(__dirname + '/views', {
   extension: 'pug'

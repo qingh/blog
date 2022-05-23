@@ -6,27 +6,19 @@ const router = new Router()
 router.prefix(`${baseUrl}/users`)
 
 router.get('/', async (ctx, next) => {
-  ctx.body = await Users.getUserList()
+  ctx.body = await Users.getUserList(ctx)
 })
 
 router.post('/', async (ctx, next) => {
-  const { username } = ctx.request.body
-  ctx.body = await Users.addUser({ username })
+  ctx.body = await Users.addUser(ctx)
 })
 
 router.patch('/:id', async (ctx, next) => {
-  const { id, username } = ctx.request.body
-  console.log(id)
-  console.log(username)
-  ctx.body = await Users.updateUser({
-    id,
-    username
-  })
+  ctx.body = await Users.updateUser(ctx)
 })
 
 router.delete('/:id', async (ctx, next) => {
-  const { id = 0 } = ctx.params
-  ctx.body = await Users.deleteUser(Number(id))
+  ctx.body = await Users.deleteUser(ctx)
 })
 
 router.post('/login', async (ctx, next) => {

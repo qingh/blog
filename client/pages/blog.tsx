@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { baseUrl } from '../config';
+import { service } from '../api';
 import css from '../styles/blog.module.scss';
-import { Date } from '../components/date';
+import { DateComponent } from '../components/date';
 import { format } from '../utils';
 
 interface IArticleList {
@@ -22,7 +22,6 @@ interface ILabelNum {
 }
 
 export default function Blog({ articleList, labelNum }: { articleList: IArticleList[], labelNum: ILabelNum[] }) {
-  console.log(articleList);
   return (
     <div className={css.blog}>
       <div className={css['bread-crumb']}> <Link href="/">博客首页</Link><b>{'>'}</b><span>日志列表</span></div>
@@ -43,7 +42,7 @@ export default function Blog({ articleList, labelNum }: { articleList: IArticleL
           }
         </div>
         <div className={css.right}>
-          <Date />
+          {/* <DateComponent /> */}
           <div className={css.item}>
             <h3>分类</h3>
             <ul>
@@ -61,27 +60,36 @@ export default function Blog({ articleList, labelNum }: { articleList: IArticleL
 export async function getStaticProps() {
   let result1: IArticleList[] = []
   let result2: ILabelNum[] = []
-  {
-    let res = await fetch(`${baseUrl}/api/v1/articles?current=1&pageSize=10`)
-    let { errorCode, message, data } = await res.json()
-    if (errorCode) {
-      result1 = data.records
+  let p1 = service.articleList({ current: 1, pageSize: 10 })
+  let p2 = service.articleNumOfLabel()
+  let [res1, res2] = await Promise.allSettled([p1, p2]);
+  if (res1.status === 'fulfilled') {
+    const [err, res] = res1.value;
+    if (err) {
+      console.log(err);
     } else {
-      console.log(message);
+      const { errorCode, message, data } = res.data
+      if (errorCode) {
+        result1 = data.records
+      }
     }
   }
-  {
-    let res = await fetch(`${baseUrl}/api/v1/labels/articleNumOfLabel`)
-    let { errorCode, message, data } = await res.json()
-    if (errorCode) {
-      result2 = data
+  if (res2.status === 'fulfilled') {
+    const [err, res] = res2.value;
+    if (err) {
+      console.log(err);
     } else {
-      console.log(message);
+      const { errorCode, message, data } = res.data
+      if (errorCode) {
+        result2 = data
+      }
     }
   }
 
-  console.log(result1);
-  console.log(result2);
+
+
+  // console.log('cc',result1);
+  // console.log(result2);
   return {
     props: {
       articleList: result1,

@@ -6,16 +6,24 @@ const router = new Router()
 router.prefix(`${baseUrl}/comments`)
 
 router.get('/', async (ctx, next) => {
-  ctx.body = await Comments.getCommentList()
+  ctx.body = await Comments.getCommentList(ctx)
 })
 
 router.post('/', async (ctx, next) => {
-  ctx.body = await Comments.addComment(ctx.request.body)
+  ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
+  ctx.set('Access-Control-Allow-Credentials', 'true')
+  ctx.body = await Comments.addComment(ctx)
+  // ctx.body = 'haha'
+})
+router.options('/', async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
+  ctx.set('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
+  ctx.set('Access-Control-Allow-Headers', 'content-type')
+  ctx.set('Access-Control-Allow-Credentials', 'true')
 })
 
 router.delete('/:id', async (ctx, next) => {
-  const { id = 0 } = ctx.params
-  ctx.body = await Comments.deleteComment(Number(id))
+  ctx.body = await Comments.deleteComment(ctx)
 })
 
 export {

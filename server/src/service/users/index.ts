@@ -2,16 +2,8 @@ import { ParameterizedContext } from 'koa'
 import { db } from '../../database/mysql.js'
 import { response } from '../../utils/index.js'
 
-interface IAddUser {
-  username: string
-}
-interface IUser {
-  username: string
-  password: string
-}
-
 /** 用户列表 */
-async function getUserList () {
+async function getUserList(ctx: ParameterizedContext) {
   try {
     const p1 = db.execute('SELECT COUNT(*) AS total FROM users')
     const p2 = db.execute('SELECT id,username,created_at,updated_at,admin FROM users')
@@ -49,7 +41,7 @@ async function getUserList () {
 
 /** 登录 */
 // async function login (params:IUser) {
-async function login (ctx:ParameterizedContext) {
+async function login(ctx: ParameterizedContext) {
   console.log(ctx.request.body)
   const { username, password } = ctx.request.body
   try {
@@ -91,9 +83,10 @@ async function login (ctx:ParameterizedContext) {
 }
 
 /** 添加用户 */
-async function addUser (params:IAddUser) {
+async function addUser(ctx: ParameterizedContext) {
+  const { username } = ctx.request.body
   try {
-    if (typeof params.username === 'undefined' || params.username === '') {
+    if (typeof username === 'undefined' || username === '') {
       return {
         ...response.resError,
         message: `username is required`
@@ -101,7 +94,7 @@ async function addUser (params:IAddUser) {
     }
 
     {
-      const data = await db.execute(`SELECT * FROM users WHERE username = '${params.username}'`)
+      const data = await db.execute(`SELECT * FROM users WHERE username = '${username}'`)
       // @ts-ignore
       if (data[0].length !== 0) {
         return {
@@ -112,7 +105,7 @@ async function addUser (params:IAddUser) {
     }
 
     const sql = `INSERT INTO users (username,password,admin,created_at,updated_at) VALUES (?,?,?,NOW(),NOW())`
-    await db.execute(sql, [params.username, '123', 0])
+    await db.execute(sql, [username, '123', 0])
     return {
       ...response.resSuccess
     }
@@ -127,16 +120,17 @@ async function addUser (params:IAddUser) {
 }
 
 /** 编辑用户 */
-async function updateUser (params: { id: number } & IAddUser) {
+async function updateUser(ctx: ParameterizedContext) {
+  const { id = 0, username } = ctx.request.body
   try {
-    if (typeof params.username === 'undefined' || params.username === '') {
+    if (typeof username === 'undefined' || username === '') {
       return {
         ...response.resError,
         message: `username is required`
       }
     }
 
-    if (params.id === 1) { // 超级管理员
+    if (Number(id) === 1) { // 超级管理员
       return {
         ...response.resError,
         message: '权限不足'
@@ -144,7 +138,7 @@ async function updateUser (params: { id: number } & IAddUser) {
     }
 
     {
-      const data = await db.execute(`SELECT * FROM users WHERE username = '${params.username}'`)
+      const data = await db.execute(`SELECT * FROM users WHERE username = '${username}'`)
       // @ts-ignore
       if (data[0].length !== 0) {
         return {
@@ -154,7 +148,7 @@ async function updateUser (params: { id: number } & IAddUser) {
       }
     }
 
-    const data = await db.execute(`SELECT * FROM users WHERE id = ${params.id}`)
+    const data = await db.execute(`SELECT * FROM users WHERE id = ${id}`)
     // @ts-ignore
     if (data[0].length !== 1) {
       return {
@@ -162,8 +156,8 @@ async function updateUser (params: { id: number } & IAddUser) {
         message: '资源不存在'
       }
     }
-    const sql = `UPDATE users SET username = ?,updated_at = NOW() WHERE id = ${params.id}`
-    await db.execute(sql, [params.username])
+    const sql = `UPDATE users SET username = ?,updated_at = NOW() WHERE id = ${id}`
+    await db.execute(sql, [username])
     return {
       ...response.resSuccess
     }
@@ -178,9 +172,10 @@ async function updateUser (params: { id: number } & IAddUser) {
 }
 
 /** 删除用户 */
-async function deleteUser (id: number) {
+async function deleteUser(ctx: ParameterizedContext) {
+  const { id = 0 } = ctx.params
   try {
-    if (id === 1) { // 超级管理员
+    if (Number(id) === 1) { // 超级管理员
       return {
         ...response.resError,
         message: '权限不足'

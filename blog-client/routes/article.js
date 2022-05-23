@@ -26,11 +26,11 @@ let obj = {
 };
 
 router.get('/', async function (ctx, next) {
-	logger.info('客户端IP是：' + common.getClientIp(ctx.req));
+	logger.info('客户端IP是2：' + common.getClientIp(ctx.req));
 	try {
 		let id = ctx.query.id,
 			// sql = `SELECT articles.*,labels.name FROM articles INNER JOIN labels on articles.label_id = labels.label_id where articles.article_id = ${id}`,
-			sql = `SELECT articles.*,labels.name FROM articles INNER JOIN labels on articles.label_id = labels.label_id where articles.article_id = 67`,
+			sql = `SELECT articles.*,labels.name FROM articles INNER JOIN labels on articles.label_id = labels.label_id where articles.article_id = ${id}`,
 			[data] = await db.query(sql);
 
 		if (data.length === 0) {

@@ -8,9 +8,11 @@
     "start:run": "nodemon ./dist/app.js",
     "start3": "concurrently npm:start:*",
     "tsc": "tsc",
-    "start": "nodemon ./dist/app.js"
+    "start": "nodemon ./dist/app.js",
+    "start2": "nodemon ./dist/test.js"
   },
   "dependencies": {
+    "formidable": "^2.0.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
@@ -21,9 +23,11 @@
     "koa-views": "^8.0.0",
     "mongodb": "^4.6.0",
     "mysql2": "^2.3.3",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "sequelize": "^6.19.2"
   },
   "devDependencies": {
+    "@types/formidable": "^2.0.5",
     "@types/koa": "^2.13.4",
     "@types/koa-bodyparser": "^4.3.7",
     "@types/koa-json": "^2.0.20",

@@ -19,6 +19,7 @@ module.exports = {
     'space-before-function-paren': 'off',
     'no-undef': 'off', // 不禁用会导致全局interface报错
     'no-unused-vars': 'off', // 不禁用会导致全局interface报错
-    'no-lone-blocks': 'off'
+    'no-lone-blocks': 'off',
+    'camelcase': 'off'
   }
 }

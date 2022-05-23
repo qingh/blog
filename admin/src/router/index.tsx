@@ -1,5 +1,6 @@
 import { lazy } from 'react'
-import { HomeOutlined } from '@ant-design/icons'
+import Icon, { HomeOutlined } from '@ant-design/icons'
+import { Article, Comment, Label, User } from '../pages/common/icon'
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '@pages/home'))
 const NotFound = lazy(() => import(/* webpackChunkName: "404" */ '@pages/404'))
 
@@ -18,28 +19,28 @@ const router = [
   {
     key: '1',
     label: '文章管理',
-    icon: <HomeOutlined />,
+    icon: <Icon component={Article}></Icon>,
     path: 'articleManage',
     component: ArticleManage
   },
   {
     key: '2',
     label: '评论管理',
-    icon: <HomeOutlined />,
+    icon: <Icon component={Comment}></Icon>,
     path: 'commentManage',
     component: CommentManage
   },
   {
     key: '3',
-    label: '分类管理',
-    icon: <HomeOutlined />,
+    label: '标签管理',
+    icon: <Icon component={Label}></Icon>,
     path: 'labelManage',
     component: LabelManage
   },
   {
     key: '4',
     label: '用户管理',
-    icon: <HomeOutlined />,
+    icon: <Icon component={User}></Icon>,
     path: 'userManage',
     component: UserManage
   },
