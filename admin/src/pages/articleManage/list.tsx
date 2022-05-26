@@ -10,7 +10,6 @@ interface IData extends IAddArticle {
 }
 
 interface IProps {
-  labelList: ILabel[]
   getDtaList: () => void
   tableData: ITableData
   onPageChange: (page: IPage) => void
@@ -30,11 +29,7 @@ export const List = (props: IProps) => {
     },
     {
       title: '分类',
-      dataIndex: 'label_id',
-      render: (id: number) => {
-        const obj = props.labelList.find(item => item.id === id)
-        return <span>{obj?.label}</span>
-      }
+      dataIndex: 'label'
     },
     {
       title: '发布日期',

@@ -1,15 +1,14 @@
 {
-  "name": "blog-server",
+  "name": "server",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start:build": "tsc",
-    "start:run": "nodemon ./dist/app.js",
-    "start3": "concurrently npm:start:*",
+    "start:mongo": "cross-env NODE_ENV=development db=mongo nodemon ./dist/app.js",
+    "start:mysql": "cross-env NODE_ENV=development db=mysql nodemon ./dist/app.js",
     "tsc": "tsc",
-    "start": "nodemon ./dist/app.js",
-    "start2": "nodemon ./dist/test.js"
+    "build": "cross-env NODE_ENV=production nodemon ./dist/app.js",
+    "test":"cross-env NODE_ENV=development nodemon ./dist/test.js"
   },
   "dependencies": {
     "formidable": "^2.0.1",
@@ -38,6 +37,8 @@
     "@typescript-eslint/eslint-plugin": "^5.24.0",
     "@typescript-eslint/parser": "^5.24.0",
     "concurrently": "^7.1.0",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.0.1",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",

@@ -1,6 +1,7 @@
 import Router from 'koa-router'
-import { baseUrl } from '../config/index.js'
-import * as Labels from '../service/labels/index.js'
+import { db, baseUrl } from '../config/index.js'
+
+const Labels = await import(`../service/${db}/labels.js`)
 
 const router = new Router()
 router.prefix(`${baseUrl}/labels`)

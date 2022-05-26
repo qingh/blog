@@ -21,6 +21,7 @@ export default () => {
     visible: false,
     type: 0// 0:新建；1:编辑
   })
+
   const [tableData, setTableData] = useState({ current: 1, pageSize: 10 } as ITableData)
   const [queryData, setQueryData] = useState({} as IArticleQuery)
   const [labelList, setLabelList] = useState([])
@@ -110,6 +111,10 @@ export default () => {
   /** 查询 */
   function onSearch (val: IArticleQuery) {
     setQueryData(val)
+    setTableData({
+      ...tableData,
+      current: 1
+    })
   }
 
   /** 分页 */
@@ -124,7 +129,7 @@ export default () => {
     <Fragment>
       <Query onSearch={val => onSearch(val)} toogleModal={toogleModal} labelList={labelList} userList={userList} loading={tableData.loading} />
       <br />
-      <List tableData={tableData} onPageChange={onPageChange} getDtaList={getDtaList} labelList={labelList} toogleModal={toogleModal} />
+      <List tableData={tableData} onPageChange={onPageChange} getDtaList={getDtaList} toogleModal={toogleModal} />
       <OperateModal modal={modal} toogleModal={toogleModal} getDtaList={getDtaList} labelList={labelList} />
     </Fragment>
   )

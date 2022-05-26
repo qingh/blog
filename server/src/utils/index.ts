@@ -9,6 +9,16 @@ const response = {
   }
 }
 
+function handlError(err: Error) {
+  let msg = 'Unexpected error'
+  if (err instanceof Error) msg = err.message
+  return {
+    ...response.resError,
+    message: msg
+  }
+}
+
 export {
-  response
+  response,
+  handlError
 }

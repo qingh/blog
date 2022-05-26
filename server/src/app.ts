@@ -1,15 +1,14 @@
 import Koa from 'koa'
 import views from 'koa-views'
 import json from 'koa-json'
-// import onerror from 'koa-onerror';
 import bodyparser from 'koa-bodyparser'
 import logger from 'koa-logger'
 import koaStatic from 'koa-static'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/index.js'
+import { port, db } from './config/index.js'
 
-const port = 8888
 const app = new Koa()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -41,5 +40,9 @@ app.on('error', (err, ctx) => {
 })
 
 app.listen(port, () => {
-  console.log(`server running at ${port}`)
+  console.log(JSON.stringify({
+    port,
+    db,
+    env: process.env.NODE_ENV
+  }))
 })

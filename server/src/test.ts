@@ -31,13 +31,49 @@ createSecureServer(({
 }).listen(7777) */
 
 import Koa from 'koa'
-import Router from 'koa-router'
+import { sequelize } from 'model/index.js'
+import { ormArticle } from './model/articles.js'
+import { ormComment } from './model/comments.js'
+import { ormLabel } from './model/labels.js'
+import { ormUser } from './model/users.js'
 
 const app = new Koa()
-const router = new Router()
 
 app.use(async (ctx, next) => {
+  /* myTable.sync()
+  const data = await myTable.create({
+    label_id: 1,
+    title: 'aaa',
+    content: 'bbb',
+    author: 'qingh',
+    browser: 12
+  })
+  console.log('data==>', data) */
+  /* const data = await ormArticle.findAll({
+    where: {
+      id: 136
+    }
+  }) */
+  ormArticle.findAll({
+    attributes: {
+      include: [
+        [
+          sequelize.literal(`(
+            SELECT label FROM labels WHERE id = articles.label_id 
+          )`), 'label'
+        ]
+      ]
+    },
+    where: {
+      id: 136
+    }
+  }).then(res => {
+    console.log('res', res)
+  }).catch(err => {
+    console.log('err', err)
+  })
 
+  ctx.body = 'ok'
 })
 
 app.listen(7777)

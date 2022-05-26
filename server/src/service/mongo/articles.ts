@@ -1,26 +1,26 @@
 import { ParameterizedContext } from 'koa'
 import { db } from '../../database/mysql.js'
+import { db as db2 } from '../../database/mongo.js'
 import { response } from '../../utils/index.js'
 
 /** 文章列表 */
 async function getArticlesList(ctx: ParameterizedContext) {
   const { current = 1, pageSize = 10 } = ctx.query
+
   try {
-    const offset = Number(current) * Number(pageSize) - Number(pageSize)
-    const p1 = db.execute('SELECT COUNT(*) AS total FROM articles')
-    const p2 = db.execute(`SELECT * FROM articles LIMIT ${offset},${pageSize}`)
+    const p1 = db2.collection('articles').estimatedDocumentCount()
+    const p2 = db2.collection('articles').aggregate([{ $addFields: { id: "$_id", _id: 0 } }, { $project: { _id: 0 } }]).toArray()
     const [res1, res2] = await Promise.allSettled([p1, p2])
     let total = 0
     let data = []
+
     if (res1.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
-      total = res1.value[0][0].total
+      total = res1.value
     } else {
       throw res1.reason
     }
     if (res2.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
-      data = res2.value[0]
+      data = res2.value
     } else {
       throw res2.reason
     }

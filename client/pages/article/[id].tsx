@@ -45,6 +45,7 @@ export default function Article({ articleDetail, context }: { articleDetail: IAr
 
   const [dd, setDD] = useState(articleDetail)
 
+
   async function onSubmit(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     const comment = commentRef.current!.value;
@@ -80,7 +81,6 @@ export default function Article({ articleDetail, context }: { articleDetail: IAr
       }
     }
   }
-  console.log('render');
 
   if (articleDetail) {
     return (
@@ -170,10 +170,12 @@ export async function getStaticProps(context: { params: { id: number } }) {
   let [res1, res2] = await Promise.allSettled([p1, p2]);
   if (res1.status === 'fulfilled') {
     const [err, res] = res1.value;
+  
     if (err) {
       console.log(err);
     } else {
       const { errorCode, data } = res.data
+      console.log('res1',data);
       if (errorCode) {
         result1 = data
       }

@@ -1,6 +1,7 @@
 import Router from 'koa-router'
-import { baseUrl } from '../config/index.js'
-import * as Users from '../service/users/index.js'
+import { db, baseUrl } from '../config/index.js'
+
+const Users = await import(`../service/${db}/users.js`)
 
 const router = new Router()
 router.prefix(`${baseUrl}/users`)

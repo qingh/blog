@@ -22,10 +22,16 @@ export const Query = (props: IProps) => {
     }
   }, [props.loading])
 
-  // 表单提交
+  /** 表单提交 */
   function onFinish (values: IArticleQuery) {
     setLoaing(true)
     props.onSearch(values)
+  }
+
+  /** 重置 */
+  function reset () {
+    form.resetFields()
+    props.onSearch(form.getFieldsValue())
   }
 
   return (
@@ -36,7 +42,7 @@ export const Query = (props: IProps) => {
     >
       <Row gutter={[16, 16]}>
         <Col span={6}>
-          <Form.Item name="article_id" label="文章ID">
+          <Form.Item name="id" label="文章ID">
             <Input placeholder="请输入文章ID" autoComplete={'off'}/>
           </Form.Item>
         </Col>
@@ -64,7 +70,7 @@ export const Query = (props: IProps) => {
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="author" label="作者">
+          <Form.Item name="user_id" label="作者">
             <Select<string | number, { value: string; children: string }>
               showSearch
               placeholder="请选择作者"
@@ -90,7 +96,7 @@ export const Query = (props: IProps) => {
           </Button>
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>
-          <Button htmlType="button" onClick={() => form.resetFields()}>
+          <Button htmlType="button" onClick={reset}>
             重置
           </Button>
           <Button htmlType="submit" type="primary" loading={loading} style={{ marginLeft: '8px' }}>

@@ -66,6 +66,10 @@ export default () => {
   /** 查询 */
   function onSearch (val: IUserQuery) {
     setQueryData(val)
+    setTableData({
+      ...tableData,
+      current: 1
+    })
   }
 
   /** 分页 */

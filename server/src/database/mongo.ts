@@ -1,8 +1,8 @@
 import { MongoClient } from 'mongodb'
-const url = 'mongodb://localhost:27017'
+import { mongoConfig } from '../config/index.js'
 
-const client = new MongoClient(url, {
-  maxPoolSize: 1
+const client = new MongoClient(mongoConfig.url, {
+  // maxPoolSize: 1
 })
 
 client.addListener('open', () => {
@@ -22,6 +22,6 @@ client.addListener('error', (err) => {
 })
 
 await client.connect()
-const db = client.db('2022-05-15')
+const db = client.db('blog')
 
 export { client, db }

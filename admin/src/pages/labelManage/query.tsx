@@ -36,10 +36,16 @@ export const Query = (props: IProps) => {
     }
   }
 
-  // 表单提交
+  /** 表单提交 */
   function onFinish (values: ILabelQuery) {
     setLoaing(true)
     props.onSearch(values)
+  }
+
+  /** 重置 */
+  function reset () {
+    form.resetFields()
+    props.onSearch(form.getFieldsValue())
   }
 
   return (
@@ -86,7 +92,7 @@ export const Query = (props: IProps) => {
           </Button>
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>
-          <Button htmlType="button" onClick={() => form.resetFields()}>
+          <Button htmlType="button" onClick={reset}>
             重置
           </Button>
           <Button htmlType="submit" type="primary" loading={loading} style={{ marginLeft: '8px' }}>

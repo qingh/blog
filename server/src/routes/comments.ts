@@ -1,6 +1,7 @@
 import Router from 'koa-router'
-import { baseUrl } from '../config/index.js'
-import * as Comments from '../service/comments/index.js'
+import { db, baseUrl } from '../config/index.js'
+
+const Comments = await import(`../service/${db}/comments.js`)
 
 const router = new Router()
 router.prefix(`${baseUrl}/comments`)
@@ -13,7 +14,6 @@ router.post('/', async (ctx, next) => {
   ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
   ctx.set('Access-Control-Allow-Credentials', 'true')
   ctx.body = await Comments.addComment(ctx)
-  // ctx.body = 'haha'
 })
 router.options('/', async (ctx, next) => {
   ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
