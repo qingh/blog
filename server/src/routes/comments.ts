@@ -11,19 +11,16 @@ router.get('/', async (ctx, next) => {
 })
 
 router.post('/', async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
-  ctx.set('Access-Control-Allow-Credentials', 'true')
   ctx.body = await Comments.addComment(ctx)
-})
-router.options('/', async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
-  ctx.set('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
-  ctx.set('Access-Control-Allow-Headers', 'content-type')
-  ctx.set('Access-Control-Allow-Credentials', 'true')
 })
 
 router.delete('/:id', async (ctx, next) => {
   ctx.body = await Comments.deleteComment(ctx)
+})
+
+// client接口，不需要认证
+router.post('/add', async (ctx, next) => {
+  ctx.body = await Comments.addComment(ctx)
 })
 
 export {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Modal, Form, Input, Button, Select, message } from 'antd'
 import { articleService } from '@api/service'
 import { IAddArticle } from './types'
-import { ILabel } from '@pages/labelManage/types'
+import { ILabel } from '@pages/label/types'
 const { TextArea } = Input
 const { Option } = Select
 

@@ -1,13 +1,13 @@
-import { createElement, useState, Suspense, FC, useRef } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
-
-import { Layout, Menu, Dropdown, Space, Avatar } from 'antd'
-import Icon, {
+import { createElement, FC, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Layout, Menu, Dropdown, Avatar, message } from 'antd'
+import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined
 } from '@ant-design/icons'
 import css from './index.module.less'
+import { userService } from '@api/service'
 
 interface IProps {
   collapsed: boolean
@@ -17,11 +17,23 @@ interface IProps {
 const { Header } = Layout
 
 export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
-  const navigage = useNavigate()
+  const navigate = useNavigate()
+  const [user, setUser] = useState(sessionStorage.getItem('user'))
+
+  function editUser () {
+    setUser(sessionStorage.getItem('user'))
+  }
+
+  useEffect(() => {
+    window.addEventListener('message', editUser)
+    return () => {
+      window.removeEventListener('message', editUser)
+    }
+  }, [])
   const menu = (
     <Menu
       onClick={({ key }) => {
-        if (key === '3')navigage('/login')
+        if (key === '3')logout()
       }}
       items={[
         {
@@ -39,6 +51,20 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
       ]}
     />
   )
+
+  async function logout () {
+    const [err, res] = await userService.logut()
+    if (err) return message.error(err.message)
+    const { errorCode, message: msg } = res.data
+    if (errorCode) {
+      message.success(msg)
+      sessionStorage.clear()
+      navigate('/login')
+    } else {
+      message.error(msg)
+    }
+  }
+
   return (
     <Header style={{ padding: 0, background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
@@ -48,7 +74,7 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
       <Dropdown overlay={menu}>
         <div onClick={e => e.preventDefault()} style={{ marginRight: '20px' }}>
           <Avatar style={{ backgroundColor: '#87d068', marginRight: '8px' }} icon={<UserOutlined/> } size={'small'}/>
-          <span style={{ color: '#40a9ff' }}>qingh</span>
+          <span style={{ color: '#40a9ff' }}>{user}</span>
         </div>
       </Dropdown>
     </Header>

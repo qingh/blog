@@ -12,8 +12,8 @@ export const ormLabel = sequelize.define('labels', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  author: {
-    type: DataTypes.STRING,
+  user_id: {
+    type: DataTypes.INTEGER,
     allowNull: false
   }
 }, {

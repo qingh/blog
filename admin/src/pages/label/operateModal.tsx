@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Modal, Form, Input, Button, Select, message } from 'antd'
 import { labelService } from '@api/service'
 import { IAddLabel } from './types'
-import { ILabel } from '@pages/labelManage/types'
+import { ILabel } from '@pages/label/types'
 
 interface IData extends IAddLabel {
   id: number

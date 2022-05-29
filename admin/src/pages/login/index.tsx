@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import css from './index.module.less'
 import { userService } from '@api/service'
-import { ILogin } from '@pages/userManage/types'
+import { ILogin } from '@pages/user/types'
+import { useEffect } from 'react'
 
 const layout = {
   labelCol: { span: 5 },
@@ -14,11 +15,32 @@ const tailLayout = {
 
 export const Login = () => {
   const navigate = useNavigate()
-  const onFinish = async (values: ILogin) => {
-    const [err, res] = await userService.login(values)
+  useEffect(() => {
+    logout()
+  }, [])
+
+  async function logout () {
+    const [err, res] = await userService.logut()
     if (err) return message.error(err.message)
     const { errorCode, message: msg } = res.data
-    if (errorCode) return navigate('/')
+    if (errorCode) {
+      sessionStorage.clear()
+    } else {
+      message.error(msg)
+    }
+  }
+
+  async function onFinish (values: ILogin) {
+    const [err, res] = await userService.login(values)
+    if (err) return message.error(err.message)
+    const { errorCode, message: msg, data } = res.data
+    if (errorCode) {
+      const { id, user } = data
+      sessionStorage.setItem('isLogin', 'true')
+      sessionStorage.setItem('id', id)
+      sessionStorage.setItem('user', user)
+      return navigate('/')
+    }
     message.error(msg)
   }
   return (

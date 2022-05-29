@@ -22,6 +22,13 @@ interface ILabelNum {
 }
 
 export default function Blog({ articleList, labelNum }: { articleList: IArticleList[], labelNum: ILabelNum[] }) {
+
+  async function getData(){
+    let [err,data]=await service.articleList({current:1,pageSize:10})
+    console.log(err);
+    console.log(data.data);
+  }
+
   return (
     <div className={css.blog}>
       <div className={css['bread-crumb']}> <Link href="/">博客首页</Link><b>{'>'}</b><span>日志列表</span></div>
@@ -86,10 +93,6 @@ export async function getStaticProps() {
     }
   }
 
-
-
-  // console.log('cc',result1);
-  // console.log(result2);
   return {
     props: {
       articleList: result1,

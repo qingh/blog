@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react'
-import { Row, Col, Form, Input, Button, Select } from 'antd'
-import { IArticleQuery } from './types'
-import { ILabel } from '@pages/labelManage/types'
-import { IUser } from '@pages/userManage/types'
+import { Row, Col, Form, Input, Button, Select, message } from 'antd'
+import { IAddLabel, ILabelQuery } from './types'
+import { IUser } from '@pages/user/types'
+import { userService } from '@api/service'
 const { Option } = Select
 
 interface IProps {
   loading: boolean
-  labelList: ILabel[]
-  userList: IUser[]
-  onSearch: (val: IArticleQuery) => void
+  onSearch: (val: ILabelQuery) => void
   toogleModal: (type: number, visible: boolean) => void
 }
 export const Query = (props: IProps) => {
   const [form] = Form.useForm()
   const [loading, setLoaing] = useState(false)
+  const [userList, setUserList] = useState<IUser[]>([])
 
   useEffect(() => {
     if (!props.loading && loading) {
@@ -22,8 +21,23 @@ export const Query = (props: IProps) => {
     }
   }, [props.loading])
 
+  useEffect(() => {
+    getUserList()
+  }, [])
+
+  async function getUserList () {
+    const [err, res] = await userService.userList()
+    if (err) return message.error(err.message)
+    const { errorCode, message: msg, data } = res.data
+    if (errorCode) {
+      setUserList(data.records)
+    } else {
+      message.error(msg)
+    }
+  }
+
   /** 表单提交 */
-  function onFinish (values: IArticleQuery) {
+  function onFinish (values: ILabelQuery) {
     setLoaing(true)
     props.onSearch(values)
   }
@@ -41,43 +55,25 @@ export const Query = (props: IProps) => {
       onFinish={onFinish}
     >
       <Row gutter={[16, 16]}>
-        <Col span={6}>
-          <Form.Item name="id" label="文章ID">
-            <Input placeholder="请输入文章ID" autoComplete={'off'}/>
+        <Col span={8}>
+          <Form.Item name="id" label="标签ID">
+            <Input placeholder="请输入标签ID" autoComplete={'off'} />
           </Form.Item>
         </Col>
-        <Col span={6}>
-          <Form.Item name="title" label="文章标题">
-            <Input placeholder="请输入文章标题" autoComplete={'off'}/>
+        <Col span={8}>
+          <Form.Item name="label" label="标签名称">
+            <Input placeholder="请输入标签名称" autoComplete={'off'} />
           </Form.Item>
         </Col>
-        <Col span={6}>
-          <Form.Item name="label_id" label="文章分类">
+        <Col span={8}>
+          <Form.Item name="user_id" label="创建人">
             <Select<string | number, { value: string; children: string }>
               showSearch
-              placeholder="请选择分类"
-              optionFilterProp="children"
-              onChange={value => { }}
-              onSearch={value => { }}
-              filterOption={(input, option) => option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            >
-              {props.labelList.map((item: ILabel) => (
-                <Option key={item.id} value={item.id}>
-                  {item.label}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Col>
-        <Col span={6}>
-          <Form.Item name="user_id" label="作者">
-            <Select<string | number, { value: string; children: string }>
-              showSearch
-              placeholder="请选择作者"
+              placeholder="请输入创建人名称"
               optionFilterProp="children"
               filterOption={(input, option) => option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             >
-              {props.userList.map((item: IUser) => (
+              {userList.map((item: IUser) => (
                 <Option key={item.id} value={item.id}>
                   {item.username}
                 </Option>
@@ -92,7 +88,7 @@ export const Query = (props: IProps) => {
             type="primary"
             onClick={() => props.toogleModal(0, true)}
           >
-            新建文章
+            新建标签
           </Button>
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>

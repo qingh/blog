@@ -54,11 +54,20 @@ export const OperateModal = (props: IProps) => {
     const [err, res] = await userService.editUser(values)
     setLoading(false)
     if (err) return message.error(err.message)
-    const { errorCode, message: msg } = res.data
+    const { errorCode, message: msg, data } = res.data
+
     if (errorCode) {
       // 刷新列表
       props.toogleModal(props.modal.type, false)
       props.getDtaList()
+      console.log('abc', data)
+      const user_id = sessionStorage.getItem('id')
+      if (user_id !== null) {
+        if (Number(user_id) === id) {
+          sessionStorage.setItem('user', data.username)
+        }
+      }
+
       return message.success(msg)
     }
     message.error(msg)

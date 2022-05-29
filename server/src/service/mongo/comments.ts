@@ -12,13 +12,13 @@ async function getCommentList(ctx: ParameterizedContext) {
     let total = 0
     let data = []
     if (res1.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       total = res1.value[0][0].total
     } else {
       throw res1.reason
     }
     if (res2.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       data = res2.value[0]
     } else {
       throw res2.reason
@@ -90,7 +90,7 @@ async function addComment(ctx: ParameterizedContext) {
           const sql = `SELECT * FROM articles WHERE id = '${article_id}'`
           const data = await db.execute(sql)
 
-          // @ts-ignore: Unreachable code error
+          // @ts-ignore
           if (data[0].length) {
             const sql2 = `INSERT INTO comments (article_id,nick_name,comment,avatar,created_at,updated_at) VALUES (?,?,?,?,NOW(),NOW())`
             await db.execute(sql2, [article_id, nick_name, comment, fileUrl])
@@ -121,16 +121,14 @@ async function deleteComment(ctx: ParameterizedContext) {
   try {
     const sql = `DELETE FROM comments WHERE id = ${id}`
     const data = await db.execute(sql)
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     if (data[0].affectedRows === 0) {
       return {
         ...response.resError,
         message: '资源不存在'
       }
     } else {
-      return {
-        ...response.resSuccess
-      }
+      return response.resSuccess
     }
   } catch (err: unknown) {
     let msg = 'Unexpected error'

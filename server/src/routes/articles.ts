@@ -11,6 +11,11 @@ router.get('/', async (ctx, next) => {
   ctx.body = await Articles.getArticlesList(ctx)
 })
 
+/** 文章列表，client端使用，不需要认证 */
+router.get('/list', async (ctx, next) => {
+  ctx.body = await Articles.getArticlesList(ctx)
+})
+
 /** 文章详情 */
 router.get('/:id', async (ctx, next) => {
   ctx.body = await Articles.getArticlesDetail(ctx)
@@ -18,8 +23,6 @@ router.get('/:id', async (ctx, next) => {
 
 /** 文章详情(附带评论) */
 router.get('/articlesDetailAndCommentList/:id', async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
-  ctx.set('Access-Control-Allow-Credentials', 'true')
   ctx.body = await Articles.getArticlesDetailAndCommentList(ctx)
 })
 

@@ -2,17 +2,57 @@ import Koa from 'koa'
 import views from 'koa-views'
 import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
+import session from 'koa-session'
 import logger from 'koa-logger'
 import koaStatic from 'koa-static'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/index.js'
-import { port, db } from './config/index.js'
+import { port, db, baseUrl } from './config/index.js'
 
 const app = new Koa()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// 跨域设置
+app.use(async (ctx, next) => {
+  const origin = ctx.header.origin!
+  const aOrigin = [
+    'http://localhost:3000', // client
+    'http://localhost:3001'// admin
+  ]
+  if (aOrigin.includes(origin)) {
+    ctx.res.setHeader('Access-Control-Allow-Origin', origin)
+    ctx.res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    ctx.res.setHeader('Access-Control-Allow-Methods', 'PATCH,DELETE')
+    ctx.res.setHeader('Access-Control-Allow-Credentials', 'true')
+  }
+  if (ctx.method === 'OPTIONS') {
+    await next()
+    // ctx.body = ''
+  } else {
+    // 不需要鉴权的接口
+    const noUnauthorized = [
+      `${baseUrl}/users/login`,
+      `${baseUrl}/users/logout`,
+
+      `${baseUrl}/comments/add`,
+      `${baseUrl}/articles/list`,
+      `${baseUrl}/labels/articleNumOfLabel`,
+      `${baseUrl}/articles/id/context`,
+      `${baseUrl}/articles/articlesDetailAndCommentList/id`
+    ]
+    const url = ctx.url.split('?')[0]
+    const reg1 = /\/api\/v1\/articles\/\d+\/context/
+    const reg2 = /\/api\/v1\/articles\/articlesDetailAndCommentList\/\d+/
+    console.log('----------------------------------------------------->#', ctx.method, ctx.url, ctx.session)
+    if (ctx.session!.isLogin || noUnauthorized.includes(url) || reg1.test(url) || reg2.test(url)) {
+      await next()
+    } else {
+      ctx.status = 401
+    }
+  }
+})
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
 }))
@@ -31,13 +71,24 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+app.keys = ['some secret hurr']
+const CONFIG = {
+  key: 'blog', /** (string) cookie key (default is koa.sess) */
+  maxAge: 20 * 60 * 1000, // 20分钟
+  autoCommit: true, /** 自动提交session */
+  overwrite: true, /** 是否覆盖同名cookie */
+  httpOnly: true, /** 限制脚本操作cookie */
+  signed: true, /** 是否对cookie进行签名 */
+  rolling: false, /** 是否每次响应时刷新Session的有效期 */
+  renew: false, /** 是否在Session快过期时刷新Session的有效期 */
+  secure: false, /** 是否只通过HTTPS协议访问 */
+  sameSite: undefined /** 同站 */
+}
+
+app.use(session(CONFIG, app))
+
 // routes
 router(app)
-
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-})
 
 app.listen(port, () => {
   console.log(JSON.stringify({
@@ -46,3 +97,14 @@ app.listen(port, () => {
     env: process.env.NODE_ENV
   }))
 })
+
+/* createSecureServer({
+  key: readFileSync('./dist/certificate/localhost-privkey.pem'),
+  cert: readFileSync('./dist/certificate/localhost-cert.pem')
+}, app.callback()).listen(port, () => {
+  console.log(JSON.stringify({
+    port,
+    db,
+    env: process.env.NODE_ENV
+  }))
+}) */

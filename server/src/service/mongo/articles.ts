@@ -46,18 +46,17 @@ async function getArticlesDetail(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   try {
     const data = await db.execute(`SELECT *,(SELECT label FROM labels WHERE id = articles.label_id) AS label FROM articles WHERE id = ${id}`)
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     if (data[0].length) {
       return {
         ...response.resSuccess,
-        // @ts-ignore: Unreachable code error
+        // @ts-ignore
         data: data[0][0]
       }
-    } else {
-      return {
-        ...response.resError,
-        message: '资源不存在'
-      }
+    }
+    return {
+      ...response.resError,
+      message: '资源不存在'
     }
   } catch (err: unknown) {
     let msg = 'Unexpected error'
@@ -100,13 +99,13 @@ async function getArticlesContext(ctx: ParameterizedContext) {
     let prevData = {}
     let nextData = {}
     if (res1.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       prevData = res1.value[0][0]
     } else {
       throw res1.reason
     }
     if (res2.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       nextData = res2.value[0][0]
     } else {
       throw res2.reason
@@ -155,9 +154,7 @@ async function publisArticle(ctx: ParameterizedContext) {
 
     const sql = `INSERT INTO articles (title,label_id,content,author,created_at,updated_at) VALUES (?,?,?,'qingh',NOW(),NOW())`
     await db.execute(sql, [title, label_id, content])
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message
@@ -183,11 +180,9 @@ async function updateArticle(ctx: ParameterizedContext) {
 
     const sql1 = `UPDATE articles SET label_id = ?,title = ?,content = ?,updated_at = NOW() WHERE id = ${id}`
     const data1 = await db.execute(sql1, [label_id, title, content])
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     if (data1[0].affectedRows) {
-      return {
-        ...response.resSuccess
-      }
+      return response.resSuccess
     } else {
       return {
         ...response.resError,
@@ -210,16 +205,14 @@ async function deleteArticle(ctx: ParameterizedContext) {
   try {
     const sql = `DELETE FROM articles WHERE id = ${id}`
     const data = await db.execute(sql)
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     if (data[0].affectedRows === 0) {
       return {
         ...response.resError,
         message: '资源不存在'
       }
     } else {
-      return {
-        ...response.resSuccess
-      }
+      return response.resSuccess
     }
   } catch (err: unknown) {
     let msg = 'Unexpected error'

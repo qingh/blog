@@ -11,13 +11,13 @@ async function getLabelList(ctx: ParameterizedContext) {
     let total = 0
     let data = []
     if (res1.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       total = res1.value[0][0].total
     } else {
       throw res1.reason
     }
     if (res2.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       data = res2.value[0]
     } else {
       throw res2.reason
@@ -63,9 +63,7 @@ async function addLabel(ctx: ParameterizedContext) {
 
     const sql = `INSERT INTO labels (label,author,created_at,updated_at) VALUES (?,?,NOW(),NOW())`
     await db.execute(sql, [label, 'qingh'])// todo
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message
@@ -111,9 +109,7 @@ async function updateLabel(ctx: ParameterizedContext) {
 
     const sql = `UPDATE labels SET label = ?,updated_at = NOW() WHERE id = ${id}`
     await db.execute(sql, [label])
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message
@@ -130,17 +126,14 @@ async function deleteLabel(ctx: ParameterizedContext) {
   try {
     const sql = `DELETE FROM labels WHERE id = ${id}`
     const data = await db.execute(sql)
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     if (data[0].affectedRows === 0) {
       return {
         ...response.resError,
         message: '资源不存在'
       }
-    } else {
-      return {
-        ...response.resSuccess
-      }
     }
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message

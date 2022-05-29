@@ -4,7 +4,7 @@ import { articleService, userService, labelService } from '@api/service'
 import { Query } from './query'
 import { List } from './list'
 import { OperateModal } from './operateModal'
-import { IAddArticle, IArticleQuery, ITableData } from '@pages/articleManage/types'
+import { IAddArticle, IArticleQuery, ITableData } from '@pages/article/types'
 
 interface IData extends IAddArticle {
   id: number

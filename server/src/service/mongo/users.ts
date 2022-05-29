@@ -11,13 +11,13 @@ async function getUserList(ctx: ParameterizedContext) {
     let total = 0
     let data = []
     if (res1.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       total = res1.value[0][0].total
     } else {
       throw res1.reason
     }
     if (res2.status === 'fulfilled') {
-      // @ts-ignore: Unreachable code error
+      // @ts-ignore
       data = res2.value[0]
     } else {
       throw res2.reason
@@ -59,13 +59,11 @@ async function login(ctx: ParameterizedContext) {
     }
     const sql = `SELECT * FROM users WHERE username = ? AND password = ?`
     const data = await db.execute(sql, [username, password])
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     if (data[0].length) {
       // 登录成功
       ctx.cookies.set('aaa', 'bbb', { maxAge: 10 * 60 * 1000, overwrite: false })
-      return {
-        ...response.resSuccess
-      }
+      return response.resSuccess
     } else {
       return {
         ...response.resError,
@@ -105,10 +103,8 @@ async function addUser(ctx: ParameterizedContext) {
     }
 
     const sql = `INSERT INTO users (username,password,admin,created_at,updated_at) VALUES (?,?,?,NOW(),NOW())`
-    await db.execute(sql, [username, '123', 0])
-    return {
-      ...response.resSuccess
-    }
+    await db.execute(sql, [username, '123456', 0])
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message
@@ -158,9 +154,7 @@ async function updateUser(ctx: ParameterizedContext) {
     }
     const sql = `UPDATE users SET username = ?,updated_at = NOW() WHERE id = ${id}`
     await db.execute(sql, [username])
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message
@@ -192,9 +186,7 @@ async function deleteUser(ctx: ParameterizedContext) {
       }
     }
 
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err: unknown) {
     let msg = 'Unexpected error'
     if (err instanceof Error) msg = err.message

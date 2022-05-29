@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize'
 import { mysqlConfig } from '../config/index.js'
 
 const { host, database, user: username, password, port } = mysqlConfig
+
 const sequelize = new Sequelize({
   host,
   database,
@@ -16,4 +17,5 @@ const sequelize = new Sequelize({
   },
   timezone: '+08:00'
 })
+
 export { sequelize }

@@ -9,16 +9,12 @@ import { ormComment } from '../../model/comments.js'
 async function getCommentList(ctx: ParameterizedContext) {
   const { current = 1, pageSize = 10, id, title, comment } = ctx.query
   const articleIdFilter = id ? { id } : {}
-  const titleFilter = title ? { title: { [Op.like]: `%${title}%` } } : {}
   const commentFilter = comment ? { comment: { [Op.like]: `%${comment}%` } } : {}
-  const mergeFilter = { ...titleFilter, ...articleIdFilter, ...commentFilter }
+  const mergeFilter = { ...articleIdFilter, ...commentFilter }
 
-  /*
-  SELECT id,(SELECT title from articles WHERE comments.article_id = id) AS title,comment,nick_name,created_at FROM comments WHERE article_id  in (SELECT id FROM articles WHERE title LIKE '%w%')
-  */
   try {
     const offset = Number(current) * Number(pageSize) - Number(pageSize)
-    const p1 = await ormComment.findAndCountAll({
+    const data = await ormComment.findAndCountAll({
       attributes: {
         include: [
           [
@@ -28,7 +24,14 @@ async function getCommentList(ctx: ParameterizedContext) {
           ]
         ]
       },
-      where: mergeFilter,
+      where: {
+        ...mergeFilter,
+        ...title ? {
+          article_id: { // where 子句
+            [Op.in]: literal(`(SELECT id FROM articles WHERE title LIKE '%${title}%')`)
+          }
+        } : {}
+      },
       limit: Number(pageSize),
       offset
     })
@@ -36,8 +39,8 @@ async function getCommentList(ctx: ParameterizedContext) {
     return {
       ...response.resSuccess,
       data: {
-        total: p1.count,
-        records: p1.rows
+        total: data.count,
+        records: data.rows
       }
     }
   } catch (err) {

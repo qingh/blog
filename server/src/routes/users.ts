@@ -26,6 +26,10 @@ router.post('/login', async (ctx, next) => {
   ctx.body = await Users.login(ctx)
 })
 
+router.get('/logout', async (ctx, next) => {
+  ctx.body = await Users.logout(ctx)
+})
+
 export {
   router as users
 }

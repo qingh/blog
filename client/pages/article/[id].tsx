@@ -1,5 +1,6 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { service } from '../../api';
 import { baseUrl } from '../../config';
@@ -38,13 +39,55 @@ interface IContext {
   }
 }
 
-export default function Article({ articleDetail, context }: { articleDetail: IArticleDetail, context: IContext }) {
+// export default function Article({ articleDetail, context }: { articleDetail: IArticleDetail, context: IContext }) {
+export default function Article() {
   const commentRef = useRef<HTMLTextAreaElement>(null)
   const nickRef = useRef<HTMLInputElement>(null)
   const avatarRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
-  const [dd, setDD] = useState(articleDetail)
+  const [articleDetail,setArticleDetail] = useState({} as IArticleDetail)
+  const [context,setContext] = useState({} as IContext)
 
+  useEffect(()=>{
+    getDetail()
+  },[])
+
+  async function getDetail() {  
+    const { id  } = router.query;
+    console.log(id);
+    let result1: IArticleDetail[] = []
+    let result2: IContext[] = []
+    let p1 = service.commentOfarticle(Number(id))
+    let p2 = service.articleContext(Number(id))
+    let [res1, res2] = await Promise.allSettled([p1, p2]);
+    if (res1.status === 'fulfilled') {
+      const [err, res] = res1.value;
+      if (err) {
+        console.log(err);
+      } else {
+        const { errorCode, data } = res.data
+        if (errorCode) {
+          // result1 = data
+          console.log('data1',data);
+          setArticleDetail(data)
+        }
+      }
+    }
+    if (res2.status === 'fulfilled') {
+      const [err, res] = res2.value;
+      if (err) {
+        console.log(err);
+      } else {
+        const { errorCode, data } = res.data
+        if (errorCode) {
+          // result2 = data
+          console.log('data2',data);
+          setContext(data)
+        }
+      }
+    }
+  }
 
   async function onSubmit(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
@@ -69,14 +112,14 @@ export default function Article({ articleDetail, context }: { articleDetail: IAr
         if (err) {
           console.log(err);
         }
-        const { errorCode,data } = res.data
+        const { errorCode, data } = res.data
         if (errorCode) {
           console.log(data.comment);
           // setDD({
           //   ...articleDetail,
           //   comment:data.comment
           // })
-          setDD(data)
+          // setDD(data)
         }
       }
     }
@@ -161,7 +204,6 @@ export default function Article({ articleDetail, context }: { articleDetail: IAr
 }
 
 export async function getStaticProps(context: { params: { id: number } }) {
-  console.log('@@', context);
   const { id } = context.params
   let result1: IArticleDetail[] = []
   let result2: IContext[] = []
@@ -170,12 +212,11 @@ export async function getStaticProps(context: { params: { id: number } }) {
   let [res1, res2] = await Promise.allSettled([p1, p2]);
   if (res1.status === 'fulfilled') {
     const [err, res] = res1.value;
-  
     if (err) {
       console.log(err);
     } else {
       const { errorCode, data } = res.data
-      console.log('res1',data);
+      console.log('=====================>data',data);
       if (errorCode) {
         result1 = data
       }
@@ -199,12 +240,11 @@ export async function getStaticProps(context: { params: { id: number } }) {
       context: result2
     }
   }
-}
+} 
 
-export async function getStaticPaths(...args) {
-  console.log('201', args);
+export async function getStaticPaths() {
   return {
     paths: [{ params: { id: "" } }],
     fallback: true,
   };
-}
+} 

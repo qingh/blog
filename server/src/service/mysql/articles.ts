@@ -7,15 +7,15 @@ import { ormComment } from '../../model/comments.js'
 /** 文章列表 */
 async function getArticlesList(ctx: ParameterizedContext) {
   const { current = 1, pageSize = 10, id, title, label_id, user_id } = ctx.query
-  const articleIdFilter = id ? { id } : {}
+  const idFilter = id ? { id } : {}
   const titleFilter = title ? { title: { [Op.like]: `%${title}%` } } : {}
   const labelIdFilter = label_id ? { label_id } : {}
   const authorFilter = user_id ? { user_id } : {}
-  const mergeFilter = { ...titleFilter, ...articleIdFilter, ...labelIdFilter, ...authorFilter }
+  const mergeFilter = { ...titleFilter, ...idFilter, ...labelIdFilter, ...authorFilter }
 
   try {
     const offset = Number(current) * Number(pageSize) - Number(pageSize)
-    const p1 = await ormArticle.findAndCountAll({
+    const data = await ormArticle.findAndCountAll({
       attributes: {
         include: [
           [
@@ -37,8 +37,8 @@ async function getArticlesList(ctx: ParameterizedContext) {
     return {
       ...response.resSuccess,
       data: {
-        total: p1.count,
-        records: p1.rows
+        total: data.count,
+        records: data.rows
       }
     }
   } catch (err) {
@@ -161,13 +161,11 @@ async function publisArticle(ctx: ParameterizedContext) {
 
     await ormArticle.create({
       label_id,
-      user_id: 1, // todo
+      user_id: ctx.session!.id,
       title,
       content
     })
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err) {
     return handlError(err as Error)
   }
@@ -177,20 +175,14 @@ async function publisArticle(ctx: ParameterizedContext) {
 async function updateArticle(ctx: ParameterizedContext) {
   const { id = 0, label_id, title, content } = ctx.request.body
   try {
-    const data = await ormArticle.findAll({
-      raw: true,
-      where: { id }
-    })
-    if (data.length !== 1) {
+    const data = await ormArticle.update({ label_id, title, content }, { where: { id } })
+    if (data[0] !== 1) {
       return {
         ...response.resError,
         message: '资源不存在'
       }
     }
-    await ormArticle.update({ label_id, title, content }, { where: { id } })
-    return {
-      ...response.resSuccess
-    }
+    return response.resSuccess
   } catch (err) {
     return handlError(err as Error)
   }
@@ -200,19 +192,16 @@ async function updateArticle(ctx: ParameterizedContext) {
 async function deleteArticle(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   try {
-    const data = await ormArticle.findAll({
-      raw: true,
+    const data = await ormArticle.destroy({
       where: { id }
     })
-    if (data.length !== 1) {
+    if (data !== 1) {
       return {
         ...response.resError,
         message: '资源不存在'
       }
     }
-    await ormArticle.destroy({
-      where: { id }
-    })
+
     return response.resSuccess
   } catch (err) {
     return handlError(err as Error)

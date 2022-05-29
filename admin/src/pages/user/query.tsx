@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Row, Col, Form, Input, Button } from 'antd'
-import { IUser, IUserQuery } from '@pages/userManage/types'
+import { IUser, IUserQuery } from '@pages/user/types'
 
 interface IProps {
   loading: boolean
@@ -37,7 +37,7 @@ export const Query = (props: IProps) => {
     >
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Form.Item name="user_id" label="用户ID">
+          <Form.Item name="id" label="用户ID">
             <Input placeholder="请输入用户ID" autoComplete={'off'}/>
           </Form.Item>
         </Col>

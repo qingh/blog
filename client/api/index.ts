@@ -1,13 +1,11 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { baseUrl } from '../config';
 
-
-
-axios.defaults.baseURL = `${baseUrl}/api/v1`
-axios.defaults.timeout = 3000
-axios.defaults.withCredentials = true
-
-
+let axios = Axios.create({
+  timeout: 5000,
+  baseURL: `${baseUrl}/api/v1`,
+  withCredentials: true
+})
 
 interface IHttp {
   url: string
@@ -32,12 +30,11 @@ function http({ url, method = 'GET', data }: IHttp) {
 }
 
 const service = {
-  articleList: (data: { current: 1, pageSize: 10 }) => http({ url: '/articles', data }),
+  articleList: (data: { current: 1, pageSize: 10 }) => http({ url: '/articles/list', data }),
+  addComment: (data: FormData) => http({ method: 'POST', url: `/comments/add`, data }),
   articleNumOfLabel: () => http({ url: '/labels/articleNumOfLabel' }),
   articleContext: (id: number) => http({ url: `/articles/${id}/context` }),
-  addComment: (data: FormData) => http({ method: 'POST', url: `/comments`, data }),
-  commentOfarticle: (id:number) => http({ url: `/articles/articlesDetailAndCommentList/${id}`, }),
-
+  commentOfarticle: (id: number) => http({ url: `/articles/articlesDetailAndCommentList/${id}`, }),
 }
 
 export {

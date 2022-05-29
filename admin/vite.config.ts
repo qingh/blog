@@ -15,10 +15,17 @@ export default defineConfig({
     ]
   },
   server: {
-    port: 3001,
-    proxy: {
-      '/api/v1': 'http://localhost:8888'
-    }
+    port: 3001
+    // https: true,
+    // '/api/v1': 'https://localhost:8888'
+    // proxy: {
+    //   '/api/v1': {
+    //     target: 'https://localhost:8888',
+    //     changeOrigin: true,
+    //     secure: false,
+    //     ws: true
+    //   }
+    // }
   },
   css: {
     preprocessorOptions: {
