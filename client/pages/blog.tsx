@@ -40,6 +40,7 @@ export default function Blog({ articleList, labelNum }: { articleList: IArticleL
               <ul className={css.list}>
                 {articleList.map(item => <li key={item.id}>
                   <Link href={`/article?id=${item.id}`} as={`/article/${item.id}`}>{item.title}</Link>
+                  {/* <Link href={`/article?id=${item.id}`}>{item.title}</Link> */}
                   <span title={`${item.browser}条评论`}>（{item.browser}）</span>
                   <span>{format(item.created_at)} </span>
                 </li>)}

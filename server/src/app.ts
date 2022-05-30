@@ -5,14 +5,14 @@ import bodyparser from 'koa-bodyparser'
 import session from 'koa-session'
 import logger from 'koa-logger'
 import koaStatic from 'koa-static'
-import path from 'path'
+import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/index.js'
 import { port, db, baseUrl } from './config/index.js'
 
 const app = new Koa()
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = dirname(__filename)
 
 // 跨域设置
 app.use(async (ctx, next) => {
@@ -46,7 +46,7 @@ app.use(async (ctx, next) => {
     const reg1 = /\/api\/v1\/articles\/\d+\/context/
     const reg2 = /\/api\/v1\/articles\/articlesDetailAndCommentList\/\d+/
     console.log('----------------------------------------------------->#', ctx.method, ctx.url, ctx.session)
-    if (ctx.session!.isLogin || noUnauthorized.includes(url) || reg1.test(url) || reg2.test(url)) {
+    if (ctx.session!.isLogin || noUnauthorized.includes(url) || reg1.test(url) || reg2.test(url) || url.startsWith('/assets/images')) {
       await next()
     } else {
       ctx.status = 401

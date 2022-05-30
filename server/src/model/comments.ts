@@ -22,8 +22,7 @@ export const ormComment = sequelize.define('comments', {
   },
   avatar: {
     type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: '/assets/images/avatar.png'
+    allowNull: false
   }
 }, {
   createdAt: 'created_at',

@@ -4,13 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start:mongo": "cross-env NODE_ENV=development db=mongo nodemon ./dist/app.js",
-    "start:mysql2": "cross-env NODE_ENV=development db=mysql nodemon ./dist/app.js",
-    "start:mysql3": "cross-env NODE_ENV=development db=mysql node --loader ts-node/esm ./src/app.ts",
-    "start:mysql": "cross-env NODE_ENV=development db=mysql nodemon",
     "tsc": "tsc",
-    "build": "cross-env NODE_ENV=production nodemon ./dist/app.js",
-    "test": "cross-env NODE_ENV=development nodemon ./dist/test.js"
+    "start:mysql": "cross-env NODE_ENV=development db=mysql nodemon",
+    "start:mongo": "cross-env NODE_ENV=development db=mongo nodemon",
+    "build": "cross-env NODE_ENV=production db=mysql node ./dist/app.js",
+    "test":"node --loader ts-node/esm ./src/test.ts"
   },
   "dependencies": {
     "formidable": "^2.0.1",

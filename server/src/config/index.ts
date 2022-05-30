@@ -31,10 +31,10 @@ const mysqldb: MYSQLDB = {
     database: 'blog'
   },
   production: {
-    host: '104.171.168.137',
+    host: '121.41.3.33',
     user: 'qingh',
     port: 3306,
-    password: 'c4661ece7e8210eea96535abd106304a',
+    password: '123456',
     database: 'blog'
   }
 }

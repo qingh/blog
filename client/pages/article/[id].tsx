@@ -1,6 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { service } from '../../api';
 import { baseUrl } from '../../config';
@@ -40,26 +39,22 @@ interface IContext {
 }
 
 // export default function Article({ articleDetail, context }: { articleDetail: IArticleDetail, context: IContext }) {
-export default function Article() {
+export default function Article({ id }: { id: number }) {
   const commentRef = useRef<HTMLTextAreaElement>(null)
   const nickRef = useRef<HTMLInputElement>(null)
   const avatarRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
 
-  const [articleDetail,setArticleDetail] = useState({} as IArticleDetail)
-  const [context,setContext] = useState({} as IContext)
+  const [articleDetail, setArticleDetail] = useState({} as IArticleDetail)
+  const [context, setContext] = useState({} as IContext)
 
-  useEffect(()=>{
-    getDetail()
-  },[])
+  useEffect(() => {
+    if(typeof id !== 'undefined') getDetail()
+  }, [id])
 
-  async function getDetail() {  
-    const { id  } = router.query;
-    console.log(id);
-    let result1: IArticleDetail[] = []
-    let result2: IContext[] = []
-    let p1 = service.commentOfarticle(Number(id))
-    let p2 = service.articleContext(Number(id))
+  async function getDetail() {
+    const articleId = Number(id)
+    let p1 = service.commentOfarticle(Number(articleId))
+    let p2 = service.articleContext(Number(articleId))
     let [res1, res2] = await Promise.allSettled([p1, p2]);
     if (res1.status === 'fulfilled') {
       const [err, res] = res1.value;
@@ -68,8 +63,6 @@ export default function Article() {
       } else {
         const { errorCode, data } = res.data
         if (errorCode) {
-          // result1 = data
-          console.log('data1',data);
           setArticleDetail(data)
         }
       }
@@ -81,8 +74,6 @@ export default function Article() {
       } else {
         const { errorCode, data } = res.data
         if (errorCode) {
-          // result2 = data
-          console.log('data2',data);
           setContext(data)
         }
       }
@@ -107,25 +98,25 @@ export default function Article() {
     } else {
       const { errorCode } = res.data
       if (errorCode) {
-        // getStaticProps({ params: { id: articleDetail.id } })
         const [err, res] = await service.commentOfarticle(articleDetail.id)
         if (err) {
           console.log(err);
         }
         const { errorCode, data } = res.data
         if (errorCode) {
-          console.log(data.comment);
-          // setDD({
-          //   ...articleDetail,
-          //   comment:data.comment
-          // })
-          // setDD(data)
+          commentRef.current!.value = ''
+          nickRef.current!.value = ''
+          avatarRef.current!.value = ''   
+          setArticleDetail({
+            ...articleDetail,
+            comment:data.comment
+          })
         }
       }
     }
   }
 
-  if (articleDetail) {
+  if (Object.keys(articleDetail).length) {
     return (
       <div className={css.article}>
         <div className={css['bread-crumb']}>
@@ -177,14 +168,14 @@ export default function Article() {
           <form onSubmit={onSubmit}>
             <dl>
               <dt>* 您的留言：</dt>
-              <dd><textarea name="comment" ref={commentRef} placeholder="请输入留言"></textarea></dd>
+              <dd><textarea name="comment" ref={commentRef} placeholder="请输入留言" required></textarea></dd>
             </dl>
             <dl>
               <dt>* 您的昵称：</dt>
-              <dd><input name="nick_name" type="text" ref={nickRef} /></dd>
+              <dd><input name="nick_name" type="text" ref={nickRef} required/></dd>
             </dl>
             <dl>
-              <dt>头像：（建议尺寸72*72，支持 jpg | png | bmp | gif）</dt>
+              <dt>头像：（建议尺寸48*48，大小2M以内，支持 jpg | png ）</dt>
               <dd>
                 <input type="file" name="avatar" ref={avatarRef} />
                 {/* <span className={css['sel-file']} title="images/default.jpg">未选择任何文件</span> */}
@@ -205,7 +196,7 @@ export default function Article() {
 
 export async function getStaticProps(context: { params: { id: number } }) {
   const { id } = context.params
-  let result1: IArticleDetail[] = []
+  /* let result1: IArticleDetail[] = []
   let result2: IContext[] = []
   let p1 = service.commentOfarticle(id)
   let p2 = service.articleContext(id)
@@ -216,7 +207,7 @@ export async function getStaticProps(context: { params: { id: number } }) {
       console.log(err);
     } else {
       const { errorCode, data } = res.data
-      console.log('=====================>data',data);
+      // console.log('=====================>data',data);
       if (errorCode) {
         result1 = data
       }
@@ -232,15 +223,20 @@ export async function getStaticProps(context: { params: { id: number } }) {
         result2 = data
       }
     }
-  }
+  } */
 
-  return {
+  /* return {
     props: {
       articleDetail: result1,
       context: result2
     }
+  } */
+  return {
+    props: {
+      id
+    }
   }
-} 
+}
 
 export async function getStaticPaths() {
   return {
