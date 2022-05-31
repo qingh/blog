@@ -55,7 +55,7 @@ export const List = (props: IProps) => {
       render: (text: string, record: IArticle) => (
         <>
           <Popconfirm
-            title="确认删除？"
+            title="文章被删除后，相关的评论也会被一并删除，请确认？"
             onConfirm={() => deleteItem(record)}
             okButtonProps={{ loading }}
             okText="是"

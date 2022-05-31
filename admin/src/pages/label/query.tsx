@@ -56,13 +56,13 @@ export const Query = (props: IProps) => {
     >
       <Row gutter={[16, 16]}>
         <Col span={8}>
-          <Form.Item name="id" label="标签ID">
-            <Input placeholder="请输入标签ID" autoComplete={'off'} />
+          <Form.Item name="id" label="分类ID">
+            <Input placeholder="请输入分类ID" autoComplete={'off'} />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name="label" label="标签名称">
-            <Input placeholder="请输入标签名称" autoComplete={'off'} />
+          <Form.Item name="label" label="分类名称">
+            <Input placeholder="请输入分类名称" autoComplete={'off'} />
           </Form.Item>
         </Col>
         <Col span={8}>
@@ -88,7 +88,7 @@ export const Query = (props: IProps) => {
             type="primary"
             onClick={() => props.toogleModal(0, true)}
           >
-            新建标签
+            新建分类
           </Button>
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>

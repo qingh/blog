@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8888/api/v1'
+const env = process.env.NODE_ENV
+const url = env === 'development' ? 'http://localhost' : 'http://121.41.3.33'
+
+axios.defaults.baseURL = `${url}:8888/api/v1`
 axios.defaults.timeout = 5000
 axios.defaults.withCredentials = true
 
@@ -21,7 +24,7 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response.status === 401) {
-      location.href = '/login'
+      location.href = '/admin/login'
       return Promise.reject(new Error('登录信息过期'))
     }
   }

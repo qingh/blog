@@ -1,7 +1,17 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index.js'
 
-export const ormLabel = sequelize.define('labels', {
+interface LabelsAttributes {
+  id: number
+  label: string
+  user_id: number
+}
+
+interface LabelsCreationAttributes extends Optional<LabelsAttributes, 'id'> { }
+
+interface LabelsInstance extends Model<LabelsAttributes, LabelsCreationAttributes>, LabelsAttributes { }
+
+export const ormLabel = sequelize.define<LabelsInstance>('labels', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

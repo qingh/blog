@@ -7,8 +7,7 @@
     "tsc": "tsc",
     "start:mysql": "cross-env NODE_ENV=development db=mysql nodemon",
     "start:mongo": "cross-env NODE_ENV=development db=mongo nodemon",
-    "build": "cross-env NODE_ENV=production db=mysql node ./dist/app.js",
-    "test":"node --loader ts-node/esm ./src/test.ts"
+    "start": "cross-env NODE_ENV=production db=mysql pm2 start ./dist/app.js"
   },
   "dependencies": {
     "formidable": "^2.0.1",

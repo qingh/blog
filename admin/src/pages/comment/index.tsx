@@ -13,7 +13,7 @@ export default () => {
 
   useEffect(() => {
     getDtaList()
-  }, [queryData])
+  }, [queryData, tableData.current])
 
   /** 列表 */
   async function getDtaList () {

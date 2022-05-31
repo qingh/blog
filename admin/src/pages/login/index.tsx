@@ -48,15 +48,15 @@ export const Login = () => {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{ remember: true, username: 'test', password: '123456' }}
         onFinish={onFinish}
       >
         <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
-          <Input placeholder="请输入用户名" autoComplete={'off'}/>
+          <Input placeholder="请输入用户名" autoComplete={'off'} />
         </Form.Item>
 
         <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码' }]}>
-          <Input.Password placeholder="请输入密码" autoComplete={'off'}/>
+          <Input.Password placeholder="请输入密码" autoComplete={'off'} />
         </Form.Item>
 
         <Form.Item {...tailLayout} name="remember" valuePropName="checked">

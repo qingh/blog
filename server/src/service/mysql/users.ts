@@ -46,8 +46,7 @@ async function login(ctx: ParameterizedContext) {
         message: `password is required`
       }
     }
-    // {username:string, id:number}
-    const data: Model<{}, { username: string, id: number }>[] = await ormUser.findAll({
+    const data = await ormUser.findAll({
       raw: true,
       where: {
         username, password
@@ -60,7 +59,6 @@ async function login(ctx: ParameterizedContext) {
       }
     }
 
-    // @ts-ignore
     const { id } = data[0]
     ctx.session!.isLogin = true
     ctx.session!.id = id
@@ -81,11 +79,8 @@ async function login(ctx: ParameterizedContext) {
 /* 登出 */
 async function logout(ctx: ParameterizedContext) {
   if (ctx.session!.isLogin) {
-    // @ts-ignore
     ctx.session!.isLogin = false
-    // @ts-ignore
     ctx.session!.id = undefined
-    // @ts-ignore
     ctx.session!.user = undefined
   }
   return response.resSuccess
@@ -94,7 +89,6 @@ async function logout(ctx: ParameterizedContext) {
 /** 添加用户 */
 async function addUser(ctx: ParameterizedContext) {
   const { username } = ctx.request.body
-  console.log('解析cookie', ctx.session)
   try {
     if (typeof username === 'undefined' || username === '') {
       return {
@@ -102,6 +96,14 @@ async function addUser(ctx: ParameterizedContext) {
         message: `username is required`
       }
     }
+
+    if (ctx.session!.id !== 1) { // 超级管理员
+      return {
+        ...response.resError,
+        message: '权限不足，请联系超级管理员'
+      }
+    }
+
     const data = await ormUser.findAll({
       raw: true,
       where: {
@@ -136,12 +138,10 @@ async function updateUser(ctx: ParameterizedContext) {
       }
     }
 
-    if (ctx.session!.id !== 1) {
-      if (ctx.session!.id !== Number(id)) { // 超级管理员
-        return {
-          ...response.resError,
-          message: '权限不足'
-        }
+    if (ctx.session!.id !== 1 && ctx.session!.id !== Number(id)) { // 超级管理员
+      return {
+        ...response.resError,
+        message: '权限不足，请联系超级管理员'
       }
     }
 
@@ -191,25 +191,23 @@ async function deleteUser(ctx: ParameterizedContext) {
     if (ctx.session!.id !== 1) { // 超级管理员
       return {
         ...response.resError,
-        message: '权限不足'
+        message: '权限不足，请联系超级管理员'
       }
     }
 
     if (ctx.session!.id === Number(id)) {
       return {
         ...response.resError,
-        message: '权限不足，用户不能删除自己'
+        message: '超级管理员不能被删除'
       }
     }
-
-    // 查看被删除的用户是否有创建文章和标签，如有：不允许删除
 
     {
       const num1 = await ormLabel.count({ where: { user_id: id } })
       if (num1 !== 0) {
         return {
           ...response.resError,
-          message: `引用户新建了${num1}个标签，不能删除`
+          message: `引用户新建了${num1}个分类，不能删除`
         }
       }
       const num2 = await ormArticle.count({ where: { user_id: id } })

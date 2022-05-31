@@ -30,9 +30,15 @@
   }
 }
 
-.about-blog p {
-  text-indent: 2em;
-  font-size: 16px;
-  color: #666;
-  line-height: 30px;
+.about-blog {
+  .list {
+    line-height: 28px;
+  }
+
+  p {
+    text-indent: 2em;
+    font-size: 16px;
+    color: #666;
+    line-height: 30px;
+  }
 }

@@ -4,8 +4,8 @@ import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
 import session from 'koa-session'
 import logger from 'koa-logger'
-import koaStatic from 'koa-static'
-import { dirname } from 'path'
+import serve from 'koa-static'
+import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/index.js'
 import { port, db, baseUrl } from './config/index.js'
@@ -19,7 +19,8 @@ app.use(async (ctx, next) => {
   const origin = ctx.header.origin!
   const aOrigin = [
     'http://localhost:3000', // client
-    'http://localhost:3001'// admin
+    'http://localhost:3001', // admin
+    'http://121.41.3.33'
   ]
   if (aOrigin.includes(origin)) {
     ctx.res.setHeader('Access-Control-Allow-Origin', origin)
@@ -29,7 +30,6 @@ app.use(async (ctx, next) => {
   }
   if (ctx.method === 'OPTIONS') {
     await next()
-    // ctx.body = ''
   } else {
     // 不需要鉴权的接口
     const noUnauthorized = [
@@ -45,7 +45,6 @@ app.use(async (ctx, next) => {
     const url = ctx.url.split('?')[0]
     const reg1 = /\/api\/v1\/articles\/\d+\/context/
     const reg2 = /\/api\/v1\/articles\/articlesDetailAndCommentList\/\d+/
-    console.log('----------------------------------------------------->#', ctx.method, ctx.url, ctx.session)
     if (ctx.session!.isLogin || noUnauthorized.includes(url) || reg1.test(url) || reg2.test(url) || url.startsWith('/assets/images')) {
       await next()
     } else {
@@ -58,7 +57,7 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(koaStatic(__dirname + '\\public'))
+app.use(serve(resolve(__dirname + '/public')))
 
 app.use(views(__dirname + '/views', {
   extension: 'pug'
@@ -79,7 +78,7 @@ const CONFIG = {
   overwrite: true, /** 是否覆盖同名cookie */
   httpOnly: true, /** 限制脚本操作cookie */
   signed: true, /** 是否对cookie进行签名 */
-  rolling: false, /** 是否每次响应时刷新Session的有效期 */
+  rolling: true, /** 是否每次响应时刷新Session的有效期 */
   renew: false, /** 是否在Session快过期时刷新Session的有效期 */
   secure: false, /** 是否只通过HTTPS协议访问 */
   sameSite: undefined /** 同站 */
@@ -97,14 +96,3 @@ app.listen(port, () => {
     env: process.env.NODE_ENV
   }))
 })
-
-/* createSecureServer({
-  key: readFileSync('./dist/certificate/localhost-privkey.pem'),
-  cert: readFileSync('./dist/certificate/localhost-cert.pem')
-}, app.callback()).listen(port, () => {
-  console.log(JSON.stringify({
-    port,
-    db,
-    env: process.env.NODE_ENV
-  }))
-}) */

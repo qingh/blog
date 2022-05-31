@@ -4,7 +4,7 @@ import { ormArticle } from './../../model/articles.js'
 import { response, handlError } from '../../utils/index.js'
 import { ormLabel } from '../../model/labels.js'
 
-/** 标签列表 */
+/** 分类列表 */
 async function getLabelList(ctx: ParameterizedContext) {
   const { current = 1, pageSize = 10, id, label, user_id } = ctx.query
   const idFilter = id ? { id } : {}
@@ -45,9 +45,9 @@ async function getLabelList(ctx: ParameterizedContext) {
   }
 }
 
-/** 新增标签 */
+/** 新增分类 */
 async function addLabel(ctx: ParameterizedContext) {
-  const { label, use_id } = ctx.request.body
+  const { label } = ctx.request.body
   try {
     if (typeof label === 'undefined') {
       return {
@@ -72,7 +72,7 @@ async function addLabel(ctx: ParameterizedContext) {
   }
 }
 
-/** 编辑标签 */
+/** 编辑分类 */
 async function updateLabel(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   const { label } = ctx.request.body
@@ -83,6 +83,19 @@ async function updateLabel(ctx: ParameterizedContext) {
         message: `labels'name is required`
       }
     }
+    {
+      const data = await ormLabel.findOne({
+        raw: true,
+        where: { id }
+      })
+      if (ctx.session?.id !== 1 && data?.user_id !== ctx.session?.id) {
+        return {
+          ...response.resError,
+          message: '权限不足，请联系超级管理员'
+        }
+      }
+    }
+
     {
       const data = await ormLabel.findAll({
         raw: true,
@@ -112,32 +125,48 @@ async function updateLabel(ctx: ParameterizedContext) {
   }
 }
 
-/** 删除标签 */
+/** 删除分类 */
 async function deleteLabel(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   try {
+    const data = await ormLabel.findOne({
+      raw: true,
+      attributes: ['user_id'],
+      where: { id }
+    })
+
+    if (ctx.session?.id !== 1 && ctx.session?.id !== data?.user_id) {
+      return {
+        ...response.resError,
+        message: '权限不足，请联系超级管理员'
+      }
+    }
+
     const num = await ormArticle.count({ where: { label_id: id } })
     if (num !== 0) {
       return {
         ...response.resError,
-        message: `此标签关联了${num}篇文章，不能删除`
+        message: `此分类关联了${num}篇文章，不能删除`
       }
     }
 
-    const data = await ormLabel.destroy({ where: { id } })
-    if (data !== 1) {
-      return {
-        ...response.resError,
-        message: '资源不存在'
+    {
+      const data = await ormLabel.destroy({ where: { id } })
+      if (data !== 1) {
+        return {
+          ...response.resError,
+          message: '资源不存在'
+        }
       }
     }
+
     return response.resSuccess
   } catch (err) {
     return handlError(err as Error)
   }
 }
 
-/** 标签列表并返回该标签关联的文章数量 */
+/** 分类列表并返回该分类关联的文章数量 */
 async function articleNumOfLabel(ctx: ParameterizedContext) {
   try {
     const data = await ormLabel.findAll({

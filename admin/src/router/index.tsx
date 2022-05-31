@@ -25,7 +25,7 @@ const router = [
   },
   {
     key: '2',
-    label: '标签管理',
+    label: '分类管理',
     icon: <Icon component={Label}></Icon>,
     path: 'label',
     component: LabelComponent

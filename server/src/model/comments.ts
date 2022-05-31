@@ -1,7 +1,19 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index.js'
 
-export const ormComment = sequelize.define('comments', {
+interface CommentsAttributes {
+  id: number
+  article_id: number
+  nick_name: string
+  comment: string
+  avatar: string
+}
+
+interface CommentsCreationAttributes extends Optional<CommentsAttributes, 'id'> { }
+
+interface CommentsInstance extends Model<CommentsAttributes, CommentsCreationAttributes>, CommentsAttributes { }
+
+export const ormComment = sequelize.define<CommentsInstance>('comments', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

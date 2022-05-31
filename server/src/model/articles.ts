@@ -1,7 +1,20 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index.js'
 
-export const ormArticle = sequelize.define('articles', {
+interface ArticlesAttributes {
+  id: number
+  label_id: number
+  user_id: number
+  title: string
+  content: string
+  browser: number
+}
+
+interface ArticlesCreationAttributes extends Optional<ArticlesAttributes, 'id'> { }
+
+interface ArticlesInstance extends Model<ArticlesAttributes, ArticlesCreationAttributes>, ArticlesAttributes { }
+
+export const ormArticle = sequelize.define<ArticlesInstance>('articles', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -21,7 +34,7 @@ export const ormArticle = sequelize.define('articles', {
     allowNull: false
   },
   content: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
   browser: {

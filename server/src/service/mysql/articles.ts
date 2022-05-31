@@ -52,6 +52,15 @@ async function getArticlesDetail(ctx: ParameterizedContext) {
   try {
     const data = await ormArticle.findAll({
       raw: true,
+      attributes: {
+        include: [
+          [
+            // 子查询
+            literal(`(SELECT username FROM users WHERE id = articles.user_id)`),
+            'author'
+          ]
+        ]
+      },
       where: { id }
     })
     if (data.length !== 1) {
@@ -74,6 +83,7 @@ async function getArticlesDetailAndCommentList(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   // eslint-disable-next-line prefer-const
   let result: { errorCode: number, message: string, data?: { [key: string]: any } } = await getArticlesDetail(ctx)
+  if (!result.errorCode) return result
   try {
     const data = await ormComment.findAll({
       where: { article_id: id }
@@ -163,7 +173,8 @@ async function publisArticle(ctx: ParameterizedContext) {
       label_id,
       user_id: ctx.session!.id,
       title,
-      content
+      content,
+      browser: 0
     })
     return response.resSuccess
   } catch (err) {
@@ -175,11 +186,22 @@ async function publisArticle(ctx: ParameterizedContext) {
 async function updateArticle(ctx: ParameterizedContext) {
   const { id = 0, label_id, title, content } = ctx.request.body
   try {
-    const data = await ormArticle.update({ label_id, title, content }, { where: { id } })
-    if (data[0] !== 1) {
-      return {
-        ...response.resError,
-        message: '资源不存在'
+    {
+      const data = await ormArticle.findOne({ raw: true, where: { id } })
+      if (ctx.session?.id !== 1 && data?.user_id !== ctx.session?.id) {
+        return {
+          ...response.resError,
+          message: '权限不足，请联系超级管理员'
+        }
+      }
+    }
+    {
+      const data = await ormArticle.update({ label_id, title, content }, { where: { id } })
+      if (data[0] !== 1) {
+        return {
+          ...response.resError,
+          message: '资源不存在'
+        }
       }
     }
     return response.resSuccess
@@ -192,16 +214,30 @@ async function updateArticle(ctx: ParameterizedContext) {
 async function deleteArticle(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   try {
-    const data = await ormArticle.destroy({
-      where: { id }
-    })
-    if (data !== 1) {
-      return {
-        ...response.resError,
-        message: '资源不存在'
+    {
+      const data = await ormArticle.findOne({ raw: true, where: { id } })
+      if (ctx.session?.id !== 1 && data?.user_id !== ctx.session?.id) {
+        return {
+          ...response.resError,
+          message: '权限不足，请联系超级管理员'
+        }
       }
     }
-
+    {
+      const data = await ormArticle.destroy({
+        where: { id }
+      })
+      if (data !== 1) {
+        return {
+          ...response.resError,
+          message: '资源不存在'
+        }
+      }
+      // 文章被删除，跟文章相关的评论也需要删除
+      await ormComment.destroy({
+        where: { article_id: id }
+      })
+    }
     return response.resSuccess
   } catch (err) {
     return handlError(err as Error)

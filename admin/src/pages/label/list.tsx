@@ -24,7 +24,7 @@ export const List = (props: IProps) => {
       dataIndex: 'id'
     },
     {
-      title: '标签名称',
+      title: '分类名称',
       dataIndex: 'label'
     },
     {
@@ -74,7 +74,7 @@ export const List = (props: IProps) => {
     }
   ]
 
-  /** 删除标签 */
+  /** 删除分类 */
   async function deleteItem (record: ILabelList) {
     setLoading(true)
     const [err, res] = await labelService.delLabel(record.id)

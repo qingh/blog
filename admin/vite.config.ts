@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/admin',
   resolve: {
     alias: [
       {
@@ -16,16 +17,6 @@ export default defineConfig({
   },
   server: {
     port: 3001
-    // https: true,
-    // '/api/v1': 'https://localhost:8888'
-    // proxy: {
-    //   '/api/v1': {
-    //     target: 'https://localhost:8888',
-    //     changeOrigin: true,
-    //     secure: false,
-    //     ws: true
-    //   }
-    // }
   },
   css: {
     preprocessorOptions: {

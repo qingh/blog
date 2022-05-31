@@ -110,7 +110,7 @@ async function addComment(ctx: ParameterizedContext) {
           if (data.length !== 1) {
             return reject(new Error('资源不存在'))
           }
-          await ormComment.create({ article_id, nick_name, comment, avatar: fileUrl })
+          await ormComment.create({ article_id: Number(article_id), nick_name: <string>nick_name, comment: <string>comment, avatar: fileUrl })
           return resolve(response.resSuccess)
         } catch (err) {
           reject(err)
@@ -127,6 +127,12 @@ async function addComment(ctx: ParameterizedContext) {
 async function deleteComment(ctx: ParameterizedContext) {
   const { id = 0 } = ctx.params
   try {
+    if (ctx.session?.id !== 1) { // 超级管理员
+      return {
+        ...response.resError,
+        message: '权限不足，请联系超级管理员'
+      }
+    }
     const data1 = await ormComment.findAll({
       raw: true,
       where: { id }

@@ -1,7 +1,18 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index.js'
 
-export const ormUser = sequelize.define('users', {
+interface UsersAttributes {
+  id: number
+  username: string
+  password: string
+  admin: number
+}
+
+interface UsersCreationAttributes extends Optional<UsersAttributes, 'id'> { }
+
+interface UsersInstance extends Model<UsersAttributes, UsersCreationAttributes>, UsersAttributes { }
+
+export const ormUser = sequelize.define<UsersInstance>('users', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

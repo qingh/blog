@@ -69,7 +69,7 @@ export const OperateModal = (props: IProps) => {
 
   return (
     <Modal
-      title={props.modal.type ? '编辑标签' : '新建标签'}
+      title={props.modal.type ? '编辑分类' : '新建分类'}
       destroyOnClose
       visible={props.modal.visible}
       maskClosable={false}
@@ -97,8 +97,8 @@ export const OperateModal = (props: IProps) => {
         preserve={false}
         onFinish={(values: IAddLabel) => props.modal.type ? editItem({ ...values, id }) : addItem(values)}
       >
-        <Form.Item label="标签名称" name="label" rules={[{ required: true, message: '请输入标签名称' }]}>
-          <Input placeholder="请输入标签名称" autoComplete={'off'}/>
+        <Form.Item label="分类名称" name="label" rules={[{ required: true, message: '请输入分类名称' }]}>
+          <Input placeholder="请输入分类名称" autoComplete={'off'}/>
         </Form.Item>
       </Form>
     </Modal>
