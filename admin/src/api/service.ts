@@ -1,8 +1,7 @@
 import { http } from './axios'
-import { ILabelQuery } from '../pages/label/types'
 import { IAddArticle, IArticleQuery } from '@pages/article/types'
 import { ICommentQuery } from '@pages/comment/types'
-import { IAddLabel } from '@pages/label/types'
+import { IAddLabel, ILabelQuery } from '@pages/label/types'
 import { ILogin, IUserQuery, IAddUser } from '@pages/user/types'
 
 const articleService = {

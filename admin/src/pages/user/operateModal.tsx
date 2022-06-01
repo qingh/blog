@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
-import { Modal, Form, Input, Button, Select, message } from 'antd'
-import { labelService, userService } from '@api/service'
+import { useState, useEffect, useContext } from 'react'
+import { Modal, Form, Input, Button, message } from 'antd'
+import { userService } from '@api/service'
+import { userContext } from '@context/userContext'
 import { IAddUser } from './types'
 
 interface IData extends IAddUser {
@@ -19,6 +20,7 @@ interface IProps {
 export const OperateModal = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const [id, setId] = useState(0)
+  const { setUser } = useContext(userContext)
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -60,11 +62,11 @@ export const OperateModal = (props: IProps) => {
       // 刷新列表
       props.toogleModal(props.modal.type, false)
       props.getDtaList()
-      console.log('abc', data)
       const user_id = sessionStorage.getItem('id')
       if (user_id !== null) {
         if (Number(user_id) === id) {
           sessionStorage.setItem('user', data.username)
+          setUser(data.username)
         }
       }
 
@@ -75,38 +77,38 @@ export const OperateModal = (props: IProps) => {
 
   return (
     <Modal
-    title={props.modal.type ? '编辑用户' : '创建用户'}
-    destroyOnClose
-    visible={props.modal.visible}
-    maskClosable={false}
-    onCancel={() => props.toogleModal(props.modal.type, false)}
-    footer={[
-      <Button
-        key="back"
-        onClick={() => props.toogleModal(props.modal.type, false)}
-      >
-        取消
-      </Button>,
-      <Button
-        key="submit"
-        type="primary"
-        loading={loading}
-        onClick={() => form.submit()}
-      >
+      title={props.modal.type ? '编辑用户' : '创建用户'}
+      destroyOnClose
+      visible={props.modal.visible}
+      maskClosable={false}
+      onCancel={() => props.toogleModal(props.modal.type, false)}
+      footer={[
+        <Button
+          key="back"
+          onClick={() => props.toogleModal(props.modal.type, false)}
+        >
+          取消
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={() => form.submit()}
+        >
           确定
-      </Button>
-    ]}
-  >
-    <Form
-      layout="vertical"
-      form={form}
-      preserve={false}
-      onFinish={(values: IAddUser) => props.modal.type ? editItem({ ...values, id }) : addItem(values)}
+        </Button>
+      ]}
     >
-      <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
-        <Input placeholder="请输入用户名" autoComplete={'off'}/>
-      </Form.Item>
-    </Form>
-  </Modal>
+      <Form
+        layout="vertical"
+        form={form}
+        preserve={false}
+        onFinish={(values: IAddUser) => props.modal.type ? editItem({ ...values, id }) : addItem(values)}
+      >
+        <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
+          <Input placeholder="请输入用户名" autoComplete={'off'} />
+        </Form.Item>
+      </Form>
+    </Modal>
   )
 }

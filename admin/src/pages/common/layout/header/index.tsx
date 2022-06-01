@@ -1,4 +1,4 @@
-import { createElement, FC, useEffect, useState } from 'react'
+import { createElement, FC, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Layout, Menu, Dropdown, Avatar, message } from 'antd'
 import {
@@ -6,8 +6,9 @@ import {
   MenuFoldOutlined,
   UserOutlined
 } from '@ant-design/icons'
-import css from './index.module.less'
+import { userContext } from '@context/userContext'
 import { userService } from '@api/service'
+import css from './index.module.less'
 
 interface IProps {
   collapsed: boolean
@@ -18,22 +19,11 @@ const { Header } = Layout
 
 export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
   const navigate = useNavigate()
-  const [user, setUser] = useState(sessionStorage.getItem('user'))
-
-  function editUser () {
-    setUser(sessionStorage.getItem('user'))
-  }
-
-  useEffect(() => {
-    window.addEventListener('message', editUser)
-    return () => {
-      window.removeEventListener('message', editUser)
-    }
-  }, [])
+  const { user } = useContext(userContext)
   const menu = (
     <Menu
       onClick={({ key }) => {
-        if (key === '3')logout()
+        if (key === '3') logout()
       }}
       items={[
         {
@@ -58,7 +48,6 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
     const { errorCode, message: msg } = res.data
     if (errorCode) {
       message.success(msg)
-      sessionStorage.clear()
       navigate('/login')
     } else {
       message.error(msg)
@@ -73,7 +62,7 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
       })}
       <Dropdown overlay={menu}>
         <div onClick={e => e.preventDefault()} style={{ marginRight: '20px' }}>
-          <Avatar style={{ backgroundColor: '#87d068', marginRight: '8px' }} icon={<UserOutlined/> } size={'small'}/>
+          <Avatar style={{ backgroundColor: '#87d068', marginRight: '8px' }} icon={<UserOutlined />} size={'small'} />
           <span style={{ color: '#40a9ff' }}>{user}</span>
         </div>
       </Dropdown>

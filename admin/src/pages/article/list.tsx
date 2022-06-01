@@ -3,7 +3,7 @@ import { Popconfirm, Table, Button, message } from 'antd'
 import { articleService } from '@api/service'
 import { IArticle, IAddArticle, ITableData } from './types'
 import { ILabel } from '@pages/label/types'
-import { format } from '../../utils'
+import { format } from '@utils/index'
 
 interface IData extends IAddArticle {
   id: number

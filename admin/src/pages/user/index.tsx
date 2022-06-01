@@ -58,8 +58,6 @@ export default () => {
 
   /** 新建和编辑弹窗 */
   function toogleModal (type: number, visible: boolean, data?: IData) {
-    console.log(type)
-    console.log(visible)
     setModal({ type, visible, data })
   }
 

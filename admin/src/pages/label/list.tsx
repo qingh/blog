@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
 import { articleService, labelService } from '@api/service'
 import { IAddLabel, ITableData, ILabelList } from './types'
-import { format } from '../../utils'
+import { format } from '@utils/index'
 
 interface IData extends IAddLabel {
   id: number

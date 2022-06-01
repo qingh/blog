@@ -22,14 +22,23 @@
     "sourceMap": true,
     "baseUrl": "./src",
     "paths": {
+      "@router/*": [
+        "./router/*"
+      ],
       "@api/*": [
         "./api/*"
       ],
       "@types/*": [
         "./types/*"
       ],
+      "@utils/*": [
+        "./utils/*"
+      ],
       "@pages/*": [
         "./pages/*"
+      ],
+      "@context/*": [
+        "./context/*"
       ]
     },
   },

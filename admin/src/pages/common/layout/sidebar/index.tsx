@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
-
-import { router as originalRouter } from '../../../../router'
+import { router as originalRouter } from '@router/index'
 import { useNavigate } from 'react-router-dom'
 
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub4']

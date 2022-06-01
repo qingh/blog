@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
 import { userService } from '@api/service'
 import { IAddUser, ITableData, IUserList } from './types'
-import { format } from '../../utils'
+import { format } from '@utils/index'
 
 interface IData extends IAddUser {
   id: number

@@ -1,11 +1,12 @@
-import { createElement, useState, Suspense } from 'react'
+import { useState, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import Icon from '@ant-design/icons'
 import Loading from '../loading'
-import { router } from '../../../router'
+import { router } from '@router/index'
 import { MenuComponent } from './sidebar'
 import { TopHeader } from './header'
+import { UserContextComponent } from '@context/userContext'
 import css from './index.module.less'
 
 const { Sider, Content, Footer } = Layout
@@ -21,30 +22,33 @@ const Logo = () => {
 
 export const Home = () => {
   const [collapsed, setSollapsed] = useState(false)
+
   return (
-    <Layout style={{ height: '100%' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className={css.logo} style={{ background: collapsed ? 'transparent' : 'rgba(255, 255, 255, 0.3)' }}>{collapsed ? <Icon component={Logo}></Icon> : '博客后台管理系统'}</div>
-        <MenuComponent />
-      </Sider>
-      <Layout className="site-layout" style={{ overflow: 'auto' }}>
-        <TopHeader collapsed={collapsed} setSollapsed={setSollapsed}/>
-        <Content
-          style={{
-            padding: 24,
-            minHeight: 280
-          }}
-        >
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              {
-                router.map(item => <Route key={item.key} index={item.key === '0'} path={item.path} element={item.component ? <item.component /> : null} />)
-              }
-            </Routes>
-          </Suspense>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+    <UserContextComponent>
+      <Layout style={{ height: '100%' }}>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className={css.logo} style={{ background: collapsed ? 'transparent' : 'rgba(255, 255, 255, 0.3)' }}>{collapsed ? <Icon component={Logo}></Icon> : '博客后台管理系统'}</div>
+          <MenuComponent />
+        </Sider>
+        <Layout className="site-layout" style={{ overflow: 'auto' }}>
+          <TopHeader collapsed={collapsed} setSollapsed={setSollapsed} />
+          <Content
+            style={{
+              padding: 24,
+              minHeight: 280
+            }}
+          >
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                {
+                  router.map(item => <Route key={item.key} index={item.key === '0'} path={item.path} element={item.component ? <item.component /> : null} />)
+                }
+              </Routes>
+            </Suspense>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        </Layout>
       </Layout>
-    </Layout>
+    </UserContextComponent>
   )
 }

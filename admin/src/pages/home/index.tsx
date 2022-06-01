@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 export default () => {
   const navigate = useNavigate()
   useEffect(() => {
-    const isLogin:null|string = sessionStorage.getItem('isLogin')
+    const isLogin: null | string = sessionStorage.getItem('isLogin')
     if (isLogin === null || isLogin === 'false') {
       navigate('/login')
     }

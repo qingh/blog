@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from 'react'
 import { Popconfirm, Table, Button, message } from 'antd'
 import { commentService } from '@api/service'
 import { IComment, ITableData } from './types'
-import { format } from '../../utils'
+import { format } from '@utils/index'
 
 interface IProps {
   getDtaList: () => void
