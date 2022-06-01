@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Modal, Form, Input, Button, Select, message } from 'antd'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import { articleService } from '@api/service'
 import { IAddArticle } from './types'
 import { ILabel } from '@pages/label/types'
@@ -23,6 +25,7 @@ interface IProps {
 export const OperateModal = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const [id, setId] = useState(0)
+  const [value, setValue] = useState('')
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -76,6 +79,7 @@ export const OperateModal = (props: IProps) => {
       destroyOnClose
       visible={props.modal.visible}
       maskClosable={false}
+      width={750}
       onCancel={() => props.toogleModal(props.modal.type, false)}
       footer={[
         <Button
@@ -120,8 +124,7 @@ export const OperateModal = (props: IProps) => {
           </Select>
         </Form.Item>
         <Form.Item label="内容" name="content" rules={[{ required: true, message: '请输入文章内容' }]}>
-          {/* 此处应该是一个富文本 */}
-          <TextArea rows={4} placeholder="请输入文章内容" />
+          <ReactQuill theme="snow" value={value} onChange={setValue} style={{ height: '300px' }}/>
         </Form.Item>
       </Form>
     </Modal>

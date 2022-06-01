@@ -143,9 +143,7 @@ export default function Article() {
             <p className={css.date}>日期：{format(articleDetail.created_at)}</p>
             {/* <iframe id="mainFrame" name="mainFrame" src="https://www.a.com"
             width="100%" height="1000" scrolling="no"></iframe> */}
-            <div style={{ lineHeight: '30px' }}>
-              {articleDetail.content}
-            </div>
+            <div style={{ lineHeight: '30px' }} dangerouslySetInnerHTML={{__html:articleDetail.content}}></div>
           </div>
           <div className={css.msg}>
             <h2>留言（{articleDetail.comment.length}条）</h2>
