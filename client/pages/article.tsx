@@ -133,8 +133,8 @@ export default function Article() {
           <div className={css.top}>
             <p className={css.type}>分类：<a href="#" onClick={(ev) => ev.preventDefault()}>{articleDetail.label}</a></p>
             <ul>
-              {context.prevData ? <li><span>上一篇：</span><Link href={`/article?id=${context.prevData.id}`} as={`/article/${context.prevData.id}`}>{context.prevData.title}</Link></li> : null}
-              {context.nextData ? <li><span>下一篇：</span><Link href={`/article?id=${context.nextData.id}`} as={`/article/${context.nextData.id}`}>{context.nextData.title}</Link></li> : null}
+              {context.prevData ? <li><span>上一篇：</span><Link href={`/article?id=${context.prevData.id}`}>{context.prevData.title}</Link></li> : null}
+              {context.nextData ? <li><span>下一篇：</span><Link href={`/article?id=${context.nextData.id}`}>{context.nextData.title}</Link></li> : null}
             </ul>
           </div>
           <div className={css.main}>
@@ -154,7 +154,7 @@ export default function Article() {
                 articleDetail.comment.map((item, index) => <li key={item.id}>
                   <div className={css['msg-wrap']}>
                     <div className={css.photo}>
-                      <Image src={`${baseUrl}${item.avatar}`} loader={({ src }) => src} width="48" height="48" alt='' unoptimized={true} />
+                      <Image src={item.avatar.startsWith('http') ? `${item.avatar}` : `${baseUrl}${item.avatar}`} loader={({ src }) => src} width="48" height="48" alt='' unoptimized={true} />
                       <span>{item.nick_name}</span>
                     </div>
                     <div className={css['msg-right']}>
@@ -199,19 +199,3 @@ export default function Article() {
     return <h1>loading...</h1>
   }
 }
-
-/* export async function getStaticProps(context: { params: { id: number } }) {
-  const { id } = context.params
-  return {
-    props: {
-      id
-    }
-  }
-} */
-
-/* export async function getStaticPaths() {
-  return {
-    paths: [{ params: { id: "" } }],
-    fallback: true,
-  };
-}  */

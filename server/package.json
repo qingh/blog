@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "tsc": "tsc",
     "start:mysql": "cross-env NODE_ENV=development db=mysql nodemon",
     "start:mongo": "cross-env NODE_ENV=development db=mongo nodemon",
-    "start": "cross-env NODE_ENV=production db=mysql pm2 start ./dist/app.js"
+
+    "prestart": "tsc && mkdir -p dist/public/assets/images",
+    "start": "cross-env NODE_ENV=production db=mysql pm2 start dist/app.js"
   },
   "dependencies": {
     "formidable": "^2.0.1",

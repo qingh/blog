@@ -73,7 +73,11 @@ export default function Blog({ articleList, labelNum }: { articleList: IArticleL
   )
 }
 
-export async function getStaticProps() {
+/* export async function getServerSideProps() {
+  
+} */
+
+export async function getServerSideProps() {
   let result1: IArticleList[] = []
   let result2: ILabelNum[] = []
   let p1 = service.articleList({ current: 1, pageSize: 10 })
