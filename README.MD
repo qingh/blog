@@ -2,9 +2,9 @@
 
 本站是作者于2022年5月着手开发，花了近三个星期的时间，网站分为三个部分，用到了以下技术：
 
-- client: nextjs + typescript；用户能看到的页面
-- admin: react + antd + typescript；后台管理系统
-- server: koa + mysql + sequlize + typescript；client和admin提供接口
+- client：nextjs + typescript；用户能看到的页面
+- admin：react + antd + typescript；后台管理系统
+- server：koa + mysql + sequlize + typescript + docker；client和admin提供接口
 
 本站使用了mysql存储，建立了四张数据表，文章表articles、评论表comments、分类表labels、用户表users；共23个接口；
 
