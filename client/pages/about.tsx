@@ -16,8 +16,8 @@ export default function About() {
           <p>本站是作者于2022年5月着手开发，花了近三个星期的时间，网站分为三个部分，用到了以下技术：</p>
           <ul className={css.list}>
             <li>client: nextjs + typescript；用户能看到的页面</li>
-            <li>admin:  react + antd + typescript；<a href='http://121.41.3.33/admin/login' target={'_blank'} rel={'noopener noreferrer'}>后台管理系统</a></li>
-            <li>server: koa + mysql + sequlize + typescript；client和admin提供接口</li>
+            <li>admin:  react + antd + typescript；<a href='http://42.192.188.150/admin/login' target={'_blank'} rel={'noopener noreferrer'}>后台管理系统</a></li>
+            <li>server: koa + mysql + sequlize + typescript + docker；给client和admin提供接口</li>
           </ul>
           <p>本站使用了mysql存储，建立了四张数据表，文章表articles、评论表comments、分类表labels、用户表users；共23个接口；<a href="https://github.com/qingh/blog" target={'_blank'} rel={'noopener noreferrer'}>源码地址</a></p>
           <p>界面参考了<a

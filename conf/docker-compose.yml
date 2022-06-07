@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mydb
+    restart: always
+    cap_add:
+      - SYS_NICE
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=654321
+      - MYSQL_DATABASE=blog
+      - TZ=Asia/Shanghai
+  # nginx:
+  #   image: nginx
+  #   container_name: mynginx
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #   volumes:
+  #     - /var/www:/usr/share/nginx/html
+  #     - /var/www/conf/default.conf:/etc/nginx/conf.d/default.conf

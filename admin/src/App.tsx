@@ -5,7 +5,7 @@ import { Home } from '@pages/common/layout'
 
 export function App () {
   return (
-    <Router basename={'/admin'}>
+    <Router basename={'/admin/'}>
       <Routes>
         <Route path="*" element={<Home />}></Route>
         <Route path="/login" element={<Login />} />

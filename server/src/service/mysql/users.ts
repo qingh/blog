@@ -1,5 +1,6 @@
 import { ParameterizedContext } from 'koa'
-import { Op, literal, Model } from 'sequelize'
+import { createHash } from 'crypto'
+import { Op } from 'sequelize'
 import { ormArticle } from './../../model/articles.js'
 import { ormLabel } from './../../model/labels.js'
 import { response, handlError } from '../../utils/index.js'
@@ -49,7 +50,7 @@ async function login(ctx: ParameterizedContext) {
     const data = await ormUser.findAll({
       raw: true,
       where: {
-        username, password
+        username, password: createHash('md5').update(password).digest('hex')
       }
     })
     if (data.length !== 1) {
@@ -117,8 +118,9 @@ async function addUser(ctx: ParameterizedContext) {
       }
     }
 
+    const password = createHash('md5').update('123456').digest('hex')
     await ormUser.create({
-      username, password: '123456', admin: 0
+      username, password, admin: 0
     }, { raw: true })
 
     return response.resSuccess

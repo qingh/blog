@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const env = process.env.NODE_ENV
-const url = env === 'development' ? 'http://localhost' : 'http://121.41.3.33'
+const url = env === 'development' ? 'http://localhost' : 'http://42.192.188.150'
 
 axios.defaults.baseURL = `${url}:8888/api/v1`
 axios.defaults.timeout = 5000

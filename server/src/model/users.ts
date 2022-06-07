@@ -14,7 +14,7 @@ interface UsersInstance extends Model<UsersAttributes, UsersCreationAttributes>,
 
 export const ormUser = sequelize.define<UsersInstance>('users', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT.UNSIGNED,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true
@@ -28,7 +28,7 @@ export const ormUser = sequelize.define<UsersInstance>('users', {
     allowNull: false
   },
   admin: {
-    type: DataTypes.TINYINT,
+    type: DataTypes.TINYINT.UNSIGNED,
     allowNull: false,
     defaultValue: 0
   }

@@ -13,7 +13,7 @@ interface LabelsInstance extends Model<LabelsAttributes, LabelsCreationAttribute
 
 export const ormLabel = sequelize.define<LabelsInstance>('labels', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT.UNSIGNED,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true

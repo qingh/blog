@@ -24,17 +24,18 @@ const env = <'development' | 'production'>process.env.NODE_ENV
 const db = process.env.db
 const mysqldb: MYSQLDB = {
   development: {
-    host: 'localhost',
+    host: '172.17.0.1', // 此处重点注意
     user: 'root',
     port: 3306,
     password: '123456',
     database: 'blog'
   },
   production: {
-    host: '121.41.3.33',
+    // host: '42.192.188.150',
+    host: '172.17.0.1', // 如果使用docker启动mysql，此处就要写这个地址
     user: 'qingh',
     port: 3306,
-    password: '123456',
+    password: '654321',
     database: 'blog'
   }
 }

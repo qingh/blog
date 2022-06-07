@@ -16,7 +16,7 @@ interface ArticlesInstance extends Model<ArticlesAttributes, ArticlesCreationAtt
 
 export const ormArticle = sequelize.define<ArticlesInstance>('articles', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true

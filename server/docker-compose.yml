@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysqldb
+    restart: unless-stopped
+    cap_add:
+      - SYS_NICE
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=blog
+      - TZ=Asia/Shanghai
+  web:
+    build: .
+    container_name: node_web
+    restart: always
+    command: npm run dev
+    depends_on:
+      - db
+    ports:
+      - 8888:8888
+    volumes:
+      - .:/usr/src/app

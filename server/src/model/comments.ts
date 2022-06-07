@@ -15,7 +15,7 @@ interface CommentsInstance extends Model<CommentsAttributes, CommentsCreationAtt
 
 export const ormComment = sequelize.define<CommentsInstance>('comments', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true
