@@ -1,7 +1,7 @@
 import axios from 'axios'
+import { history } from '@router/history'
 
-const env = process.env.NODE_ENV
-const url = env === 'development' ? 'http://localhost' : 'http://42.192.188.150'
+const url = import.meta.env.DEV ? 'http://localhost' : 'http://42.192.188.150'
 
 axios.defaults.baseURL = `${url}:8888/api/v1`
 axios.defaults.timeout = 5000
@@ -24,7 +24,7 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response.status === 401) {
-      location.href = '/admin/login'
+      history.push('/admin/login')
       return Promise.reject(new Error('登录信息过期'))
     }
   }

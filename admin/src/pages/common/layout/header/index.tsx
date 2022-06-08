@@ -23,7 +23,8 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
   const menu = (
     <Menu
       onClick={({ key }) => {
-        if (key === '3') logout()
+        if (key === '3') return logout()
+        message.warn('开发中，敬请期待')
       }}
       items={[
         {
