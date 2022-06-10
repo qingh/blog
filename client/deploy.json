@@ -1,9 +1,8 @@
 {
   "apps": [
     {
-      "name": "blog",
-      "script": "npm",
-      "args" : "start"
+      "name": "client",
+      "script": "npm start"
     }
   ]
 }

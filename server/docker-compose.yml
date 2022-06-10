@@ -15,7 +15,7 @@ services:
     build: .
     container_name: node_web
     restart: always
-    command: npm run dev
+    command: npm run docker
     depends_on:
       - db
     ports:

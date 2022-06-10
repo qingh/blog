@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'antd'
 import { history } from '@router/history'
 
 const url = import.meta.env.DEV ? 'http://localhost' : 'http://42.192.188.150'
@@ -23,10 +24,14 @@ axios.interceptors.response.use(
     return res
   },
   error => {
+    let msg = ''
     if (error.response.status === 401) {
       history.push('/admin/login')
-      return Promise.reject(new Error('登录信息过期'))
+      msg = '登录信息过期'
+    } else {
+      msg = error.message
     }
+    return Promise.reject(new Error(msg))
   }
 )
 

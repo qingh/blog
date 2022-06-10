@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "deploy": "tsc && vite build"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

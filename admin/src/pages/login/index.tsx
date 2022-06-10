@@ -48,7 +48,7 @@ export const Login = () => {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true, username: 'test', password: '18583763535' }}
+        initialValues={{ remember: true, username: 'admin', password: '18583763535' }}
         onFinish={onFinish}
       >
         <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>

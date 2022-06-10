@@ -1,6 +1,7 @@
 import { createElement, FC, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Layout, Menu, Dropdown, Avatar, message } from 'antd'
+import { history } from '@router/history'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -23,7 +24,7 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
   const menu = (
     <Menu
       onClick={({ key }) => {
-        if (key === '3') return logout()
+        if (key === '3') return history.push('/admin/login')
         message.warn('开发中，敬请期待')
       }}
       items={[

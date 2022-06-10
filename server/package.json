@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development db=mysql nodemon --legacy-watch",
+    "dev": "docker-compose up",
+    "docker":"cross-env NODE_ENV=development db=mysql nodemon --legacy-watch",
     "dev:mongo": "cross-env NODE_ENV=development db=mongo nodemon --legacy-watch",
-    "prestart": "tsc && mkdir -p dist/public/assets/images",
-    "start": "cross-env NODE_ENV=production db=mysql pm2 start processes.json"
+    "deploy": "sh ./deploy.sh"
   },
   "dependencies": {
     "formidable": "^2.0.1",
