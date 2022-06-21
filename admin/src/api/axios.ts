@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { message } from 'antd'
 import { history } from '@router/history'
 
-const url = import.meta.env.DEV ? 'http://localhost' : 'http://42.192.188.150'
+const url = import.meta.env.DEV ? 'http://localhost' : 'http://liuqh.com'
 
 axios.defaults.baseURL = `${url}:8888/api/v1`
 axios.defaults.timeout = 5000
@@ -26,7 +25,7 @@ axios.interceptors.response.use(
   error => {
     let msg = ''
     if (error.response.status === 401) {
-      history.push('/admin/login')
+      history.push('/login')
       msg = '登录信息过期'
     } else {
       msg = error.message

@@ -18,7 +18,7 @@ export const CustomRouter = ({ history, ...props }: IProps) => {
   return (
     <Router
       {...props}
-      basename={'/admin/'}
+      // basename={'/admin/'}
       location={state.location}
       navigationType={state.action}
       navigator={history}
