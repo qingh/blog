@@ -1,1 +1,1 @@
-export const baseUrl = `${process.env.NEXT_PUBLIC_HOST}:8888`
+export const baseUrl = `${process.env.NEXT_PUBLIC_HOST}`

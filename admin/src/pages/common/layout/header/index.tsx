@@ -24,7 +24,7 @@ export const TopHeader: FC<IProps> = ({ collapsed, setSollapsed }) => {
   const menu = (
     <Menu
       onClick={({ key }) => {
-        if (key === '3') return history.push('/admin/login')
+        if (key === '3') return history.push('/login')
         message.warn('开发中，敬请期待')
       }}
       items={[

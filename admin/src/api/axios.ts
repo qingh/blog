@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { history } from '@router/history'
 
-const url = import.meta.env.DEV ? 'http://localhost' : 'http://liuqh.com'
+const url = import.meta.env.DEV ? 'http://localhost:8888' : 'http://api.liuqh.com'
 
-axios.defaults.baseURL = `${url}:8888/api/v1`
+axios.defaults.baseURL = `${url}/api/v1`
 axios.defaults.timeout = 5000
 axios.defaults.withCredentials = true
 
