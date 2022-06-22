@@ -31,7 +31,6 @@ const mysqldb: MYSQLDB = {
     database: 'blog'
   },
   production: {
-    // host: '42.192.188.150',
     host: '172.17.0.1', // 如果使用docker启动mysql，此处就要写这个地址
     user: 'qingh',
     port: 3306,
