@@ -5,7 +5,7 @@ export function cors() {
     const aOrigin = [
       'http://localhost:3000', // client
       'http://localhost:3001', // admin
-      'http://api.liuqh.com'
+      'http://admin.liuqh.com'
     ]
     if (aOrigin.includes(origin)) {
       ctx.res.setHeader('Access-Control-Allow-Origin', origin)

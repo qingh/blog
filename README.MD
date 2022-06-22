@@ -27,7 +27,7 @@ npm run deploy
 
 ps：博客域名还在备案中，请点击以下链接访问
 
-client：http://42.192.188.150
+client：http://liuqh.com
 
-admin：http://42.192.188.150/admin
+admin：http://admin.liuqh.com
 
